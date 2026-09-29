@@ -1,0 +1,154 @@
+<!DOCTYPE <!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> Project 2.1 </title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <style>
+        * {
+            margin: 10px;
+            padding: 10px;
+            background-color: rgb(233, 233, 11);
+        }
+        
+        .inner {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 20px;
+            padding: 20px;
+            background-color: rgb(0, 0, 0);
+            height: 200px;  
+            width: 200px;
+            border: 5px solid red;
+        }
+
+        .inner2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            background-color: rgb(124, 88, 88);
+            height: 200px;  
+            width: 200px;
+            border:  5px double red;
+        }
+
+        h4 {
+            background-color: antiquewhite;
+            color: rgb(255, 0, 0);
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: 1fr  1fr;
+            gap: 10px;
+        }
+
+
+        #lower {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+        .rectangle {
+            background-color: rgb(32, 15, 15);
+            height: fit-content;  
+            width: 100%;
+            border: 3px solid orange;
+        }
+        .box{
+            height: 300px;
+            width: 500px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        table{
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+        td{
+            border: 2px solid red;
+            height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="main">
+        <div class="inner">
+            <h4> </h4>
+            <h4> </h4>
+            <h4> </h4>
+            <h4> </h4>
+        </div>
+
+        <div class="inner">
+            <h4> </h4>
+            <h4> </h4>
+            <h4> </h4>
+            <h4> </h4>
+        </div>
+
+    </section>
+
+
+    <div class="main">
+        
+        <div class="inner2">
+            <h4> </h4>
+            <h4> </h4>
+            <h4> </h4>
+            <h4> </h4>
+        </div>
+
+        <div class="inner2">
+            <h4> </h4>
+            <h4> </h4>
+            <h4> </h4>
+            <h4> </h4>
+        </div>
+
+    </div>
+    <div id="lower">
+        <div class="rectangle">
+            <h4>box 1</h4>
+            <h4>box 2</h4>
+            <h4>box 3</h4>
+            <h4>box 4</h4>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="box">
+            <h4>box 1</h4>
+            <h4>box 2</h4>
+            <h4>box 3</h4>
+            <h4>box 4</h4>
+            <h4>box 5</h4>
+            <h4>box 6</h4>
+        </div>
+    </div>
+    <br>
+    <table>
+        <tr>
+            <td>HELLO!!!</td>
+            <td>HELLO!!!</td>
+            <td>HELLO!!!</td>
+        </tr>
+        <tr>
+            <td>HELLO!!!</td>
+            <td>HELLO!!!</td>
+            <td>HELLO!!!</td>
+        </tr>
+    </table>
+</body>
+
+</html>

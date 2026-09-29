@@ -1,0 +1,36 @@
+* {
+    margin: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(0, 0, 0)
+}
+
+h1,
+h2 {
+    color: greenyellow;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0);
+    border: 2px solid rgb(46, 45, 45);
+    padding: 10px;
+    margin: 5px;
+}
+
+ul {
+    display: flex;
+    color: bisque;
+    text-align: left;
+}
+
+li {
+    display: grid;
+    grid-column: 2, 1fr;
+    color: bisque;
+}
+
+p {
+    color: rgb(255, 255, 255);
+    text-align: left;
+}

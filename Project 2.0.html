@@ -1,0 +1,196 @@
+<!DOCTYPE <!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> Project 2.0 </title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            width: auto;
+        }
+
+        #sidebar {
+            background-color: bisque;
+            position: fixed;
+            left: 0;
+            top: 0px;
+            width: 250px;
+            height: auto;
+            background-color: rgb(255, 239, 239);
+            padding: 20px;
+        }
+
+        #sidebar h2:hover {
+            display: block;
+            color: rgb(25, 216, 152);
+            background-color: black;
+            text-decoration: none;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+
+        div {
+            display: grid;
+            grid-template-columns: 2, 1fr;
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 20px;
+            color: #69b199;
+            background-color: black;
+            height: fit-content;
+        }
+
+        p {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: small;
+        }
+
+        .inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-left: 250px;
+            padding: 20px;
+            color: red;
+            background-color: rgb(0, 0, 0);
+            height: fit-content;
+
+        }
+
+        #outer1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-left: 250px;
+            padding: 20px;
+            color: #0ff7eb;
+            background-color: black;
+            height: fit-content;
+
+        }
+
+        .inner1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        h4 {
+            background-color: rgb(255, 140, 0);
+        }
+
+        .lower {
+            background-color: bisque;
+            margin-left: 250px;
+            padding: 20px;
+            color: #69b199;
+            background-color: black;
+            height: fit-content;
+            display: grid;
+            grid-template-columns: 30% 70%;
+            gap: 20px;
+            width: auto;
+        }
+
+        h3 {
+            background-color: antiquewhite;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="sidebar">
+
+        <h2>Card 1</h2>
+        <p>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nam unde corporis rerum dolores aspernatur
+            ipsa assumenda animi quaerat vel quibusdam accusantium dolorum, inventore, minus repellat tenetur culpa
+            sed vitae illum.
+        </p>
+        <h2>Card 2</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et ut optio beatae obcaecati eaque assumenda
+            expedita inventore praesentium laudantium molestias quae error rem commodi harum, sint repudiandae.
+            Sapiente, nulla veritatis.</p>
+
+        <h2>Card 3</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et ut optio beatae obcaecati eaque assumenda
+            expedita inventore praesentium laudantium molestias quae error rem commodi harum, sint repudiandae.
+            Sapiente, nulla veritatis.</p>
+        <h2>Card 4</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et ut optio beatae obcaecati eaque assumenda
+            expedita inventore praesentium laudantium molestias quae error rem commodi harum, sint repudiandae.
+            Sapiente, nulla veritatis.</p>
+    </div>
+    <div class="main">
+        <h1>
+            Welocome to the Jungle.....1
+        </h1>
+        <h1>
+            Welocome to the Jungle.....2
+        </h1>
+        <h1>
+            Welocome to the Jungle.....3
+        </h1>
+        <h1>
+            Welocome to the Jungle.....4
+        </h1>
+    </div>
+    <br>
+    <div class="inner">
+        <h4>box 1</h4>
+        <h4>box 2</h4>
+        <h4>box 3</h4>
+        <h4>box 4</h4>
+        <h4>box 5</h4>
+        <h4>box 6</h4>
+    </div>
+    <br>
+    <div id="outer1">
+        <h1>
+            Lorem ipsum dolor sit amet.
+        </h1>
+        <h1>
+            Lorem ipsum dolor sit amet consectetur.
+        </h1>
+        <div class="inner1">
+            <h4>Box 1</h4>
+            <h4>Box 2</h4>
+            <h4>Box 3</h4>
+            <h4>Box 4</h4>
+
+        </div>
+        <div class="inner1">
+            <h4>Box 1</h4>
+            <h4>Box 2</h4>
+            <h4>Box 3</h4>
+            <h4>Box 4</h4>
+        </div>
+
+    </div>
+    <br>
+    <div class="lower">
+        <h3>
+            30%
+        </h3>
+        <h3>
+            70%
+        </h3>
+    </div>
+</body>
+
+</html>

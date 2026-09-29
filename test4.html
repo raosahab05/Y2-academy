@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid Auto-Fit and Fill</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 30px;
+        }
+
+        h2 {
+            margin: 20px 0;
+        }
+
+        .container {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .box {
+            background-color: bisque;
+            color: black;
+            padding: 50px;
+            text-align: center;
+            font-size: 24px;
+            border-radius: 10px;
+        }
+
+        .fill {
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        }
+
+        .fit {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        }
+    </style>
+</head>
+
+<body>
+    <h2 class="fill"> Auto fill </h2>
+    <div class="container fill">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+        <div class="box">4</div>
+    </div>
+    <h2> Auto fit </h2>
+    <div class="container fit">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+        <div class="box">4</div>
+    </div>
+</body>
+
+</html>

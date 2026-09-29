@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Card</title>
+    <style>
+        #inner {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        #outer {
+            border: 10px solid black;
+            width: 200px;
+        }
+        button {
+            background-color: rgb(0, 26, 255);
+            width: 70px;
+            height: 40px;
+        }
+        section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBgd5az_jLE730e-Xzaklmfrq6Mv6mJwLaZdBc7OjlBQ&s=10"
+                alt="Card Image" width="200px">
+            <div id="inner">
+                <h2>Our Prodect</h2>
+                <button>Buy Now</button>
+            </div>
+        </div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<input type="number" id="num1">
+<input type="number" id="num2">
+<input type="number" id="num3">
+<input type="number" id="num4">
+
+<button onclick="add()">Add</button>
+
+<h2 id="result"></h2>
+
+<script>
+function add(){
+let a = Number(document.getElementById("num1").value);
+let b = Number(document.getElementById("num2").value);
+
+document.getElementById("result").innerHTML = a + b;
+}
+
+function sub(){
+let a = Number(document.getElementById("num3").value);
+let b = Number(document.getElementById("num4").value);
+
+document.getElementById("result").innerHTML = a - b;
+}
+
+</script>
+</body>
+</html>

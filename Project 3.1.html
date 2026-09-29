@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Responsive Header</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f5f7fb;
+min-height:200vh;
+}
+
+header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+background:#fff;
+box-shadow:0 8px 30px rgba(0,0,0,.08);
+z-index:1000;
+}
+
+.container{
+width:90%;
+max-width:1300px;
+margin:auto;
+display:flex;
+align-items:center;
+justify-content:space-between;
+height:80px;
+}
+
+.logo{
+font-size:28px;
+font-weight:700;
+color:#2563eb;
+text-decoration:none;
+}
+
+.logo span{
+color:#ff6b00;
+}
+
+nav ul{
+display:flex;
+list-style:none;
+gap:35px;
+align-items:center;
+}
+
+nav ul li{
+position:relative;
+}
+
+nav ul li a{
+text-decoration:none;
+color:#333;
+font-weight:500;
+transition:.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active{
+color:#2563eb;
+}
+
+.dropdown{
+position:absolute;
+top:60px;
+left:0;
+width:220px;
+background:#fff;
+border-radius:10px;
+box-shadow:0 10px 35px rgba(0,0,0,.12);
+opacity:0;
+visibility:hidden;
+transition:.3s;
+padding:10px 0;
+}
+
+.dropdown a{
+display:block;
+padding:12px 20px;
+color:#444;
+}
+
+.dropdown a:hover{
+background:#f3f6ff;
+}
+
+nav ul li:hover .dropdown{
+opacity:1;
+visibility:visible;
+top:45px;
+}
+
+.right{
+display:flex;
+align-items:center;
+gap:18px;
+}
+
+.search{
+font-size:20px;
+cursor:pointer;
+color:#444;
+}
+
+.login{
+text-decoration:none;
+font-weight:500;
+color:#333;
+}
+
+.btn{
+padding:12px 24px;
+background:#2563eb;
+color:#fff;
+text-decoration:none;
+border-radius:50px;
+font-weight:600;
+transition:.3s;
+}
+
+.btn:hover{
+background:#1747b6;
+}
+
+.menu-btn{
+display:none;
+font-size:28px;
+cursor:pointer;
+}
+
+@media(max-width:992px){
+
+nav{
+position:fixed;
+top:80px;
+left:-100%;
+width:100%;
+height:calc(100vh - 80px);
+background:#fff;
+transition:.4s;
+overflow:auto;
+}
+
+nav.active{
+left:0;
+}
+
+nav ul{
+flex-direction:column;
+padding:40px;
+gap:25px;
+align-items:flex-start;
+}
+
+.dropdown{
+position:static;
+opacity:1;
+visibility:visible;
+box-shadow:none;
+padding-left:20px;
+display:none;
+}
+
+li.open .dropdown{
+display:block;
+}
+
+.right .login,
+.right .btn,
+.search{
+display:none;
+}
+
+.menu-btn{
+display:block;
+}
+
+}
+
+section{
+padding-top:120px;
+text-align:center;
+}
+
+</style>
+
+</head>
+<body>
+
+<header>
+
+<div class="container">
+
+<a href="#" class="logo">
+BSF<span> Student</span>
+</a>
+
+<nav id="nav">
+
+<ul>
+
+<li><a class="active" href="#">Home</a></li>
+
+<li><a href="#">About</a></li>
+
+<li class="has-dropdown">
+
+<a href="#">
+Services
+<i class="fa-solid fa-angle-down"></i>
+</a>
+
+<div class="dropdown">
+<a href="#">Web Development</a>
+<a href="#">App Development</a>
+<a href="#">UI/UX Design</a>
+<a href="#">SEO</a>
+</div>
+
+</li>
+
+<li><a href="#">Portfolio</a></li>
+
+<li><a href="#">Contact</a></li>
+
+</ul>
+
+</nav>
+
+<div class="right">
+
+<i class="fa-solid fa-magnifying-glass search"></i>
+
+<a href="#" class="login">
+Login
+</a>
+
+<a href="#" class="btn">
+Get Started
+</a>
+
+<div class="menu-btn" id="menuBtn">
+<i class="fa-solid fa-bars"></i>
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+<section>
+
+<h1>Responsive Premium Header</h1>
+
+<p>Scroll page to test sticky header.</p>
+
+</section>
+
+<script>
+
+const menuBtn=document.getElementById("menuBtn");
+const nav=document.getElementById("nav");
+
+menuBtn.onclick=()=>{
+
+nav.classList.toggle("active");
+
+menuBtn.innerHTML=nav.classList.contains("active")
+?'<i class="fa-solid fa-xmark"></i>'
+:'<i class="fa-solid fa-bars"></i>';
+
+}
+
+document.querySelectorAll(".has-dropdown>a").forEach(item=>{
+
+item.addEventListener("click",function(e){
+
+if(window.innerWidth<=992){
+
+e.preventDefault();
+
+this.parentElement.classList.toggle("open");
+
+}
+
+});
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Doctor Form</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <style>
+            .body {
+            font-family: Arial, sans-serif;
+            background: #eef6ff;
+            margin: 0;
+            padding: 50px;
+        }
+
+        .form-box {
+            width: 500px;
+            max-width: 90%;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            color: #172554;
+        }
+
+        p {
+            color: #64748b;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #172554;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            box-sizing: border-box;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+        }
+
+        .submit {
+            margin-top: 25px;
+            padding: 13px 25px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .submit:hover {
+            background: #1d4ed8;
+        }
+
+        .cancel {
+            margin-top: 25px;
+            padding: 13px 25px;
+            background: #ffffff;
+            color: gray;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .cancel:hover {
+            background: #ffffff;
+        }
+        </style>
+    </head>
+    <body>
+        <section class="form-box">
+
+        <h1>Register Your Clinic</h1>
+
+        <p>Join MKite and streamline your OPD</p>
+
+        <form>
+            <label>Doctor Name *</label>
+            <input
+                type="text" placeholder="Dr. John Doe" required>
+
+            <label>Phone Number *</label>
+            <input
+                type="number" placeholder="9876543210" required>
+
+            <label>Specialization *</label>
+            <input
+                type="text" placeholder="e.g. General Physician" required>
+
+            <label>Hospital/Clinic Name</label>
+            <input
+                type="text"placeholder="ABC Hospital">
+                <button class="cancel" type="reset">
+                    Cancel
+                </button>
+
+            <button class="submit" type="submit">
+                Submit Registration
+            </button>
+        </form>
+        </section>
+    </body>
+</html>
