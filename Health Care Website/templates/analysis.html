@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Health Report Analysis</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ========================= NAVBAR ========================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            HealthCare
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('home') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('upload') }}">
+                Upload Report
+            </a>
+
+            <a href="{{ url_for('trends') }}">
+                Health History
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ========================= MAIN ========================= -->
+
+    <main class="analysis-container">
+
+        <!-- ========================= PAGE HEADING ========================= -->
+
+        <section class="page-heading">
+
+            <p class="small-heading">
+                REPORT ANALYSIS
+            </p>
+
+            <h1>
+                Health Report Analysis
+            </h1>
+
+            <p>
+                Review the laboratory information extracted from your
+                uploaded health report.
+            </p>
+
+        </section>
+
+
+        <!-- ========================= REPORT OVERVIEW ========================= -->
+
+        <section class="analysis-card">
+
+            <div class="section-header">
+
+                <div>
+                    <p class="small-heading">
+                        REPORT OVERVIEW
+                    </p>
+
+                    <h2>
+                        Report Information
+                    </h2>
+                </div>
+
+                <span class="report-status-badge">
+                    {{ patient_info.get("report_status", "Not Available") }}
+                </span>
+
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <span>
+                        Report Name
+                    </span>
+
+                    <strong>
+                        {{ report_name }}
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        Analysis Date
+                    </span>
+
+                    <strong>
+                        {{ analysis_date }}
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        Report Type
+                    </span>
+
+                    <strong>
+                        {{ report_type }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= TEST INFORMATION ========================= -->
+
+        <section class="analysis-card">
+
+            <p class="small-heading">
+                TEST DETAILS
+            </p>
+
+            <h2>
+                Test Information
+            </h2>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <span>
+                        Test Name
+                    </span>
+
+                    <strong>
+                        {{ test_name }}
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        Reported Result
+                    </span>
+
+                    <strong>
+                        {{ test_result }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= PATIENT INFORMATION ========================= -->
+
+        <section class="analysis-card">
+
+            <p class="small-heading">
+                PATIENT DETAILS
+            </p>
+
+            <h2>
+                Patient Information
+            </h2>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+
+                    <span>
+                        Age
+                    </span>
+
+                    <strong>
+                        {{ patient_info.get("age", "Not Available") }}
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        Gender
+                    </span>
+
+                    <strong>
+                        {{ patient_info.get("gender", "Not Available") }}
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        Report Status
+                    </span>
+
+                    <strong>
+                        {{ patient_info.get("report_status", "Not Available") }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= RESULT SUMMARY ========================= -->
+
+        <section class="analysis-card summary-card">
+
+            <p class="small-heading">
+                ANALYSIS SUMMARY
+            </p>
+
+            <h2>
+                Result Summary
+            </h2>
+
+            <p class="summary-text">
+                {{ result_summary }}
+            </p>
+
+            <div class="summary-note">
+
+                <strong>
+                    Information notice:
+                </strong>
+
+                This summary is generated from the information
+                extracted from the uploaded laboratory report.
+                It is intended for general informational purposes
+                and is not a medical diagnosis.
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+             QUALITATIVE RESULTS
+        ========================================================== -->
+
+        {% if qualitative_results %}
+
+        <section class="analysis-card">
+
+            <div class="section-header">
+
+                <div>
+
+                    <p class="small-heading">
+                        QUALITATIVE RESULTS
+                    </p>
+
+                    <h2>
+                        Reported Qualitative Findings
+                    </h2>
+
+                </div>
+
+                <span class="result-count-badge">
+                    {{ qualitative_results|length }} Results
+                </span>
+
+            </div>
+
+
+            <p class="section-description">
+
+                These results were extracted from qualitative sections
+                of the uploaded laboratory report.
+
+            </p>
+
+
+            <div class="table-container">
+
+                <table class="parameter-table qualitative-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Test / Parameter
+                            </th>
+
+                            <th>
+                                Reported Result
+                            </th>
+
+                            <th>
+                                Interpretation
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for item in qualitative_results %}
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    {{ item.name }}
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+                                {{ item.result }}
+                            </td>
+
+
+                            <td>
+
+                                {% if item.interpretation == "Non Reactive" %}
+
+                                    <span class="status-badge status-normal">
+                                        Non Reactive
+                                    </span>
+
+                                {% elif item.interpretation == "Negative" %}
+
+                                    <span class="status-badge status-normal">
+                                        Negative
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge">
+                                        {{ item.interpretation }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+        <!-- =========================================================
+             NUMERIC PARAMETER ANALYSIS
+        ========================================================== -->
+
+        {% if parameter_analysis %}
+
+        <section class="analysis-card">
+
+            <div class="section-header">
+
+                <div>
+
+                    <p class="small-heading">
+                        NUMERIC ANALYSIS
+                    </p>
+
+                    <h2>
+                        Health Parameter Analysis
+                    </h2>
+
+                </div>
+
+                <span class="result-count-badge">
+                    {{ parameter_analysis|length }} Parameters
+                </span>
+
+            </div>
+
+
+            <p class="section-description">
+
+                The following parameters were extracted from the
+                uploaded report and compared with the available
+                reference information.
+
+            </p>
+
+
+            <div class="table-container">
+
+                <table class="parameter-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Parameter
+                            </th>
+
+                            <th>
+                                Result
+                            </th>
+
+                            <th>
+                                Unit
+                            </th>
+
+                            <th>
+                                Reference Range
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for name, data in parameter_analysis.items() %}
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    {{ name }}
+                                </strong>
+
+                            </td>
+
+
+                            <td class="result-value">
+
+                                {{ data.value }}
+
+                            </td>
+
+
+                            <td>
+                                {{ data.unit }}
+                            </td>
+
+
+                            <td>
+                                {{ data.reference_range }}
+                            </td>
+
+
+                            <td>
+
+                                {% if data.status == "Normal" %}
+
+                                    <span class="status-badge status-normal">
+                                        Normal
+                                    </span>
+
+                                {% elif data.status == "High" %}
+
+                                    <span class="status-badge status-high">
+                                        High
+                                    </span>
+
+                                {% elif data.status == "Low" %}
+
+                                    <span class="status-badge status-low">
+                                        Low
+                                    </span>
+
+                                {% elif data.status == "Deficient" %}
+
+                                    <span class="status-badge status-low">
+                                        Deficient
+                                    </span>
+
+                                {% elif data.status == "Insufficient" %}
+
+                                    <span class="status-badge status-low">
+                                        Insufficient
+                                    </span>
+
+                                {% elif data.status == "Borderline High" %}
+
+                                    <span class="status-badge status-high">
+                                        Borderline High
+                                    </span>
+
+                                {% elif data.status == "Above Optimal" %}
+
+                                    <span class="status-badge status-high">
+                                        Above Optimal
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge">
+                                        {{ data.status }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="analysis-note">
+
+                <strong>
+                    Reference range notice:
+                </strong>
+
+                Status classification is based on the reference
+                information extracted from the report. Reference
+                intervals can vary between laboratories and may also
+                depend on patient characteristics and clinical
+                context.
+
+            </div>
+
+        </section>
+
+        {% else %}
+
+        <section class="analysis-card">
+
+            <p class="small-heading">
+                PARAMETER ANALYSIS
+            </p>
+
+            <h2>
+                Health Parameters
+            </h2>
+
+            <p>
+
+                No numeric health parameters were detected in this
+                report. This may be a qualitative laboratory test.
+
+            </p>
+
+        </section>
+
+        {% endif %}
+
+
+        <!-- ========================= REPORT FINDINGS ========================= -->
+
+        <section class="analysis-card">
+
+            <p class="small-heading">
+                ATTENTION AREAS
+            </p>
+
+            <h2>
+                Report Findings
+            </h2>
+
+
+            {% if findings %}
+
+            <p class="section-description">
+
+                The following parameters were classified as outside
+                their extracted reference information or requiring
+                attention.
+
+            </p>
+
+
+            <div class="findings-container">
+
+                {% for finding in findings %}
+
+                <div class="finding-item">
+
+                    <div class="finding-icon">
+                        !
+                    </div>
+
+                    <div class="finding-content">
+
+                        {% if finding.name is defined %}
+
+                            <h3>
+                                {{ finding.name }}
+                            </h3>
+
+                            <p>
+
+                                <strong>
+                                    Result:
+                                </strong>
+
+                                {{ finding.value }}
+                                {{ finding.unit }}
+
+                            </p>
+
+                            <span class="finding-status">
+                                {{ finding.status }}
+                            </span>
+
+                        {% else %}
+
+                            <p>
+                                {{ finding }}
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="no-findings">
+
+                <h3>
+                    No separate attention areas detected
+                </h3>
+
+                <p>
+                    No patient-specific findings were generated
+                    from the extracted report parameters.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- ========================= NEXT STEPS ========================= -->
+
+        <section class="analysis-card">
+
+            <p class="small-heading">
+                EXPLORE
+            </p>
+
+            <h2>
+                Next Steps
+            </h2>
+
+            <p class="section-description">
+
+                Explore the following sections for general health
+                information and report monitoring.
+
+            </p>
+
+
+            <div class="next-step-buttons">
+
+                <a href="{{ url_for('diet') }}"
+                   class="action-button">
+
+                    Diet & Guidance
+
+                </a>
+
+
+                <a href="{{ url_for('precautions') }}"
+                   class="action-button">
+
+                    Precautions
+
+                </a>
+
+
+                <a href="{{ url_for('trends') }}"
+                   class="action-button">
+
+                    Health Trends
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= DISCLAIMER ========================= -->
+
+        <section class="analysis-disclaimer">
+
+            <div class="disclaimer-icon">
+                !
+            </div>
+
+            <div>
+
+                <h3>
+                    General Information Only
+                </h3>
+
+                <p>
+
+                    This system presents information extracted from
+                    laboratory reports and provides general
+                    informational guidance. It does not diagnose
+                    medical conditions or replace evaluation by a
+                    qualified healthcare professional.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= ACTIONS ========================= -->
+
+        <section class="analysis-actions">
+
+            <a href="{{ url_for('upload') }}"
+               class="secondary-button">
+
+                Upload Another Report
+
+            </a>
+
+
+            <button
+                type="button"
+                class="primary-button"
+                onclick="saveReport()">
+
+                Save Report
+
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <!-- ========================= FOOTER ========================= -->
+
+    <footer class="footer">
+
+        <p>
+            Health Report Understanding & Monitoring System
+        </p>
+
+        <p>
+            For general informational purposes only.
+        </p>
+
+    </footer>
+
+
+    <!-- ========================= JAVASCRIPT ========================= -->
+
+    <script>
+
+        function saveReport() {
+
+            alert(
+                "Report saved successfully!"
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analyzing Report - HealthCare</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+
+        <div class="logo">
+            Health<span>Care</span>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('home') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('home') }}#features">
+                Features
+            </a>
+
+            <a href="{{ url_for('home') }}#how-it-works">
+                How It Works
+            </a>
+
+            <a href="{{ url_for('home') }}#about">
+                About
+            </a>
+        </nav>
+
+    </header>
+
+
+    <!-- Processing Section -->
+    <section class="processing-section">
+
+        <div class="processing-card">
+
+            <div class="processing-icon">
+                🔍
+            </div>
+
+            <p class="tagline">
+                REPORT ANALYSIS
+            </p>
+
+            <h1 id="processingTitle">
+                Analyzing Your Report
+            </h1>
+
+            <p class="processing-text" id="processingText">
+                Please wait while the system processes your
+                health report and prepares the information.
+            </p>
+
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+
+                <div
+                    class="progress-bar"
+                    id="progressBar">
+                </div>
+
+            </div>
+
+
+            <!-- Processing Steps -->
+            <div class="processing-steps">
+
+                <!-- Step 1 -->
+                <div class="processing-step completed">
+
+                    <span>✓</span>
+
+                    <div>
+                        <strong>
+                            Report Uploaded
+                        </strong>
+
+                        <p>
+                            Your report has been received.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- Step 2 -->
+                <div class="processing-step active">
+
+                    <span>⟳</span>
+
+                    <div>
+                        <strong>
+                            Reading Report
+                        </strong>
+
+                        <p>
+                            Reading information from the report.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- Step 3 -->
+                <div class="processing-step">
+
+                    <span>○</span>
+
+                    <div>
+                        <strong>
+                            Identifying Parameters
+                        </strong>
+
+                        <p>
+                            Finding important health parameters.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- Step 4 -->
+                <div class="processing-step">
+
+                    <span>○</span>
+
+                    <div>
+                        <strong>
+                            Preparing Health Summary
+                        </strong>
+
+                        <p>
+                            Organizing the report information.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- Step 5 -->
+                <div class="processing-step">
+
+                    <span>○</span>
+
+                    <div>
+                        <strong>
+                            Preparing Guidance
+                        </strong>
+
+                        <p>
+                            Preparing general health information.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-content">
+
+            <div>
+
+                <div class="logo">
+                    Health<span>Care</span>
+                </div>
+
+                <p>
+                    Health Report Understanding & Monitoring System
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 Health Report System. All rights reserved.
+            </p>
+
+            <p>
+                For informational purposes only.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- Processing JavaScript -->
+    <script>
+
+        const steps =
+            document.querySelectorAll(".processing-step");
+
+        const progressBar =
+            document.getElementById("progressBar");
+
+        const title =
+            document.getElementById("processingTitle");
+
+        const text =
+            document.getElementById("processingText");
+
+
+        let currentStep = 1;
+
+
+        const timer = setInterval(function () {
+
+            // Complete current step
+            steps[currentStep]
+                .classList.remove("active");
+
+            steps[currentStep]
+                .classList.add("completed");
+
+            steps[currentStep]
+                .querySelector("span")
+                .textContent = "✓";
+
+
+            currentStep++;
+
+
+            // Activate next step
+            if (currentStep < steps.length) {
+
+                steps[currentStep]
+                    .classList.add("active");
+
+                steps[currentStep]
+                    .querySelector("span")
+                    .textContent = "⟳";
+
+
+                let progress =
+                    (currentStep / (steps.length - 1)) * 100;
+
+                progressBar.style.width =
+                    progress + "%";
+
+            }
+
+
+            // Processing completed
+            else {
+
+                clearInterval(timer);
+
+                progressBar.style.width = "100%";
+
+                title.textContent =
+                    "Report Processing Completed";
+
+                text.textContent =
+                    "Your report has been processed successfully.";
+
+
+                // Go to Analysis page
+                setTimeout(function () {
+
+                    window.location.href =
+                        "{{ url_for('analysis') }}";
+
+                }, 1500);
+
+            }
+
+        }, 2000);
+
+    </script>
+
+</body>
+
+</html>

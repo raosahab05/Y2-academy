@@ -1,0 +1,33 @@
+             HOME
+               │
+               ▼
+           REGISTER
+               │
+               ▼
+            LOGIN
+               │
+               ▼
+          DASHBOARD
+               │
+               ▼
+        UPLOAD REPORT
+               │
+               ▼
+       REPORT PROCESSING
+               │
+               ▼
+       PARAMETER ANALYSIS
+               │
+        ┌──────┼──────┐
+        ▼      ▼      ▼
+     SUMMARY  DIET  PRECAUTIONS
+        │      │      │
+        └──────┼──────┘
+               ▼
+         SAVE REPORT
+               │
+               ▼
+        HEALTH HISTORY
+               │
+               ▼
+         TREND ANALYSIS

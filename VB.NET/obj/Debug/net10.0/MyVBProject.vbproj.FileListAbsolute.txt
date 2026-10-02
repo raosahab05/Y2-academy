@@ -1,0 +1,21 @@
+F:\HTML\MyVBProject\bin\Debug\net10.0\MyVBProject.exe
+F:\HTML\MyVBProject\bin\Debug\net10.0\MyVBProject.deps.json
+F:\HTML\MyVBProject\bin\Debug\net10.0\MyVBProject.runtimeconfig.json
+F:\HTML\MyVBProject\bin\Debug\net10.0\MyVBProject.dll
+F:\HTML\MyVBProject\bin\Debug\net10.0\MyVBProject.pdb
+F:\HTML\MyVBProject\obj\Debug\net10.0\MyVBProject.GeneratedMSBuildEditorConfig.editorconfig
+F:\HTML\MyVBProject\obj\Debug\net10.0\MyVBProject.AssemblyInfoInputs.cache
+F:\HTML\MyVBProject\obj\Debug\net10.0\MyVBProject.AssemblyInfo.vb
+F:\HTML\MyVBProject\obj\Debug\net10.0\MyVBProject.vbproj.CoreCompileInputs.cache
+F:\HTML\MyVBProject\obj\Debug\net10.0\MyVBProject.dll
+F:\HTML\MyVBProject\obj\Debug\net10.0\refint\MyVBProject.dll
+F:\HTML\MyVBProject\obj\Debug\net10.0\MyVBProject.pdb
+F:\HTML\MyVBProject\obj\Debug\net10.0\MyVBProject.genruntimeconfig.cache
+F:\HTML\MyVBProject\obj\Debug\net10.0\ref\MyVBProject.dll
+F:\VS Code\VB.NET\obj\Debug\net10.0\MyVBProject.GeneratedMSBuildEditorConfig.editorconfig
+F:\VS Code\VB.NET\obj\Debug\net10.0\MyVBProject.AssemblyInfoInputs.cache
+F:\VS Code\VB.NET\obj\Debug\net10.0\MyVBProject.AssemblyInfo.vb
+F:\VS Code\VB.NET\obj\Debug\net10.0\MyVBProject.vbproj.CoreCompileInputs.cache
+F:\VS Code\VB.NET\obj\Debug\net10.0\MyVBProject.dll
+F:\VS Code\VB.NET\obj\Debug\net10.0\refint\MyVBProject.dll
+F:\VS Code\VB.NET\obj\Debug\net10.0\MyVBProject.pdb

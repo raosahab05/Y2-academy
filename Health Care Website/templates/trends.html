@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Health Trends</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+
+        <div class="logo">
+            Health<span>Care</span>
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="analysis.html">Analysis</a>
+            <a href="diet.html">Diet & Guidance</a>
+            <a href="precautions.html">Precautions</a>
+            <a href="trends.html" class="active">Health Trends</a>
+        </nav>
+
+        <div class="nav-buttons">
+            <a href="upload.html" class="primary-btn">
+                Upload Report
+            </a>
+        </div>
+
+    </header>
+
+
+    <!-- Trends Section -->
+    <section class="trends-section">
+
+        <div class="trends-container">
+
+            <!-- Heading -->
+            <div class="trends-heading">
+
+                <p class="tagline">
+                    HEALTH MONITORING
+                </p>
+
+                <h1>
+                    Health Trends
+                </h1>
+
+                <p>
+                    Compare your health parameters across
+                    previous reports.
+                </p>
+
+            </div>
+
+
+            <!-- Parameter Selection -->
+            <div class="trend-control-card">
+
+                <label for="parameter">
+                    Select Parameter
+                </label>
+
+                <select id="parameter">
+
+                    <option value="glucose">
+                        Glucose
+                    </option>
+
+                    <option value="hemoglobin">
+                        Hemoglobin
+                    </option>
+
+                    <option value="cholesterol">
+                        Cholesterol
+                    </option>
+
+                    <option value="vitaminD">
+                        Vitamin D
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Chart Card -->
+            <div class="trend-card">
+
+                <div class="card-heading">
+
+                    <h2>
+                        Glucose Trend
+                    </h2>
+
+                    <p>
+                        Sample values from previous reports.
+                    </p>
+
+                </div>
+
+
+                <!-- Simple Chart -->
+                <div class="chart">
+
+                    <div class="y-axis">
+
+                        <span>180</span>
+                        <span>160</span>
+                        <span>140</span>
+                        <span>120</span>
+                        <span>100</span>
+                        <span>80</span>
+
+                    </div>
+
+
+                    <div class="chart-area">
+
+                        <div class="grid-line line-1"></div>
+                        <div class="grid-line line-2"></div>
+                        <div class="grid-line line-3"></div>
+                        <div class="grid-line line-4"></div>
+                        <div class="grid-line line-5"></div>
+
+
+                        <!-- Trend Line -->
+                        <svg
+                            class="trend-svg"
+                            viewBox="0 0 700 300"
+                            preserveAspectRatio="none">
+
+                            <polyline
+                                points="40,170 190,130 340,145 490,100 640,120"
+                                fill="none"
+                                stroke="#2563eb"
+                                stroke-width="4"
+                            />
+
+                            <circle
+                                cx="40"
+                                cy="170"
+                                r="6"
+                                fill="#2563eb"
+                            />
+
+                            <circle
+                                cx="190"
+                                cy="130"
+                                r="6"
+                                fill="#2563eb"
+                            />
+
+                            <circle
+                                cx="340"
+                                cy="145"
+                                r="6"
+                                fill="#2563eb"
+                            />
+
+                            <circle
+                                cx="490"
+                                cy="100"
+                                r="6"
+                                fill="#2563eb"
+                            />
+
+                            <circle
+                                cx="640"
+                                cy="120"
+                                r="6"
+                                fill="#2563eb"
+                            />
+
+                        </svg>
+
+                        <!-- Dates -->
+                        <div class="chart-dates">
+
+                            <span>Jan</span>
+                            <span>Mar</span>
+                            <span>May</span>
+                            <span>Jul</span>
+                            <span>Sep</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Report Comparison -->
+            <div class="trend-card">
+
+                <div class="card-heading">
+
+                    <h2>
+                        Report History
+                    </h2>
+
+                    <p>
+                        Previous values recorded in the system.
+                    </p>
+
+                </div>
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Report Date</th>
+                                <th>Parameter</th>
+                                <th>Value</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>25 Sep 2026</td>
+                                <td>Glucose</td>
+                                <td>145 mg/dL</td>
+                                <td>
+                                    <span class="status-badge monitor">
+                                        Monitor
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>15 Jul 2026</td>
+                                <td>Glucose</td>
+                                <td>132 mg/dL</td>
+                                <td>
+                                    <span class="status-badge normal">
+                                        Normal
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>10 May 2026</td>
+                                <td>Glucose</td>
+                                <td>128 mg/dL</td>
+                                <td>
+                                    <span class="status-badge normal">
+                                        Normal
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>20 Mar 2026</td>
+                                <td>Glucose</td>
+                                <td>120 mg/dL</td>
+                                <td>
+                                    <span class="status-badge normal">
+                                        Normal
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <!-- Summary -->
+            <div class="trend-summary">
+
+                <div>
+                    <span>Latest Value</span>
+                    <strong>145 mg/dL</strong>
+                </div>
+
+                <div>
+                    <span>Previous Value</span>
+                    <strong>132 mg/dL</strong>
+                </div>
+
+                <div>
+                    <span>Reports Available</span>
+                    <strong>4</strong>
+                </div>
+
+            </div>
+
+            <!-- Note -->
+            <div class="trend-note">
+
+                <strong>Note:</strong>
+
+                Trend information is intended to help organize
+                historical report data. Changes in results should
+                be interpreted in the appropriate clinical context
+                by a qualified healthcare professional.
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-content">
+
+            <div>
+
+                <div class="logo">
+                    Health<span>Care</span>
+                </div>
+
+                <p>
+                    Health Report Understanding & Monitoring System
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 Health Report System. All rights reserved.
+            </p>
+
+            <p>
+                For informational purposes only.
+            </p>
+
+        </div>
+
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>

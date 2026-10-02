@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Diet & Guidance - HealthCare</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- ========================= NAVBAR ========================= -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            Health<span>Care</span>
+        </div>
+
+
+        <nav>
+
+            <a href="{{ url_for('home') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('analysis') }}">
+                Analysis
+            </a>
+
+            <a href="{{ url_for('diet') }}"
+               class="active">
+
+                Diet & Guidance
+
+            </a>
+
+            <a href="{{ url_for('trends') }}">
+                Health History
+            </a>
+
+        </nav>
+
+
+        <div class="nav-buttons">
+
+            <a href="{{ url_for('upload') }}"
+               class="primary-btn">
+
+                Upload Report
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ========================= MAIN ========================= -->
+
+    <main class="diet-section">
+
+        <div class="diet-container">
+
+
+            <!-- ========================= PAGE HEADING ========================= -->
+
+            <section class="diet-heading">
+
+                <p class="tagline">
+                    REPORT-BASED GUIDANCE
+                </p>
+
+                <h1>
+                    Diet & General Health Guidance
+                </h1>
+
+                <p>
+                    General dietary and lifestyle information
+                    generated using the available laboratory
+                    report information.
+                </p>
+
+            </section>
+
+
+
+            <!-- ========================= IMPORTANT NOTICE ========================= -->
+
+            <section class="guidance-notice">
+
+                <strong>
+                    Important:
+                </strong>
+
+                <span>
+
+                    This information is provided for general
+                    educational purposes only. It is not a
+                    diagnosis, treatment plan, or prescribed diet.
+                    Dietary and medical decisions should be discussed
+                    with a qualified healthcare professional.
+
+                </span>
+
+            </section>
+
+
+
+            <!-- ========================= REPORT CONTEXT ========================= -->
+
+            <section class="diet-card report-context-card">
+
+                <div class="card-heading">
+
+                    <p class="tagline">
+                        REPORT CONTEXT
+                    </p>
+
+                    <h2>
+                        Guidance Based on Uploaded Report
+                    </h2>
+
+                    <p>
+                        The following information was extracted from
+                        the currently analysed report.
+                    </p>
+
+                </div>
+
+
+                <div class="info-grid">
+
+
+                    <div class="info-item">
+
+                        <span>
+                            Report
+                        </span>
+
+                        <strong>
+
+                            {{ report_name
+                               | default("Not Available") }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <span>
+                            Report Type
+                        </span>
+
+                        <strong>
+
+                            {{ report_type
+                               | default("Not Available") }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <span>
+                            Patient Age
+                        </span>
+
+                        <strong>
+
+                            {{ patient_info.get("age",
+                               "Not Available")
+                               if patient_info
+                               else "Not Available" }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <span>
+                            Gender
+                        </span>
+
+                        <strong>
+
+                            {{ patient_info.get("gender",
+                               "Not Available")
+                               if patient_info
+                               else "Not Available" }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= GUIDANCE MESSAGE ========================= -->
+
+            <section class="guidance-notice">
+
+                <strong>
+                    How the guidance was generated:
+                </strong>
+
+                <span>
+
+                    {{ guidance_message }}
+
+                </span>
+
+            </section>
+
+
+
+            <!-- ========================= FOOD GUIDANCE ========================= -->
+
+            <section class="guidance-grid">
+
+
+                <!-- ========================= FOODS TO CONSIDER ========================= -->
+
+                <div class="guidance-card">
+
+                    <div class="guidance-icon">
+                        🥗
+                    </div>
+
+                    <h2>
+                        Foods to Consider
+                    </h2>
+
+
+                    <ul>
+
+                        {% for item in dietary_guidance %}
+
+                            <li>
+                                {{ item }}
+                            </li>
+
+                        {% else %}
+
+                            <li>
+                                No report-specific dietary
+                                guidance is currently available.
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+
+
+                <!-- ========================= FOODS TO LIMIT ========================= -->
+
+                <div class="guidance-card">
+
+                    <div class="guidance-icon">
+                        ⚖️
+                    </div>
+
+                    <h2>
+                        Foods to Consider Limiting
+                    </h2>
+
+
+                    <ul>
+
+                        {% for item in limiting_guidance %}
+
+                            <li>
+                                {{ item }}
+                            </li>
+
+                        {% else %}
+
+                            <li>
+                                No specific food-limiting guidance
+                                was generated from the available
+                                report parameters.
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+
+
+                <!-- ========================= HEALTHY HABITS ========================= -->
+
+                <div class="guidance-card">
+
+                    <div class="guidance-icon">
+                        🚶
+                    </div>
+
+                    <h2>
+                        Healthy Habits
+                    </h2>
+
+
+                    <ul>
+
+                        {% for item in health_habits %}
+
+                            <li>
+                                {{ item }}
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= DETECTED PARAMETERS ========================= -->
+
+            <section class="diet-card">
+
+                <div class="card-heading">
+
+                    <p class="tagline">
+                        REPORT PARAMETERS
+                    </p>
+
+                    <h2>
+                        Parameters Considered for Guidance
+                    </h2>
+
+                    <p>
+                        These are the extracted parameters that
+                        the system used while preparing the general
+                        guidance.
+                    </p>
+
+                </div>
+
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Parameter
+                                </th>
+
+                                <th>
+                                    Result
+                                </th>
+
+                                <th>
+                                    Unit
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for name, item
+                               in parameter_analysis.items() %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ name }}
+                                    </td>
+
+                                    <td>
+                                        {{ item.value }}
+                                    </td>
+
+                                    <td>
+                                        {{ item.unit }}
+                                    </td>
+
+                                    <td>
+
+                                        {% if item.status
+                                              in ["Normal", "Optimal"] %}
+
+                                            <span class="status-badge status-normal">
+
+                                                {{ item.status }}
+
+                                            </span>
+
+                                        {% elif item.status
+                                              in ["Low",
+                                                  "Deficient",
+                                                  "Insufficient",
+                                                  "Prediabetes Range",
+                                                  "Borderline High",
+                                                  "Above Optimal"] %}
+
+                                            <span class="status-badge status-low">
+
+                                                {{ item.status }}
+
+                                            </span>
+
+                                        {% elif item.status
+                                              in ["High",
+                                                  "Very High"] %}
+
+                                            <span class="status-badge status-high">
+
+                                                {{ item.status }}
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="status-badge">
+
+                                                {{ item.status }}
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+                            {% else %}
+
+                                <tr>
+
+                                    <td colspan="4">
+
+                                        No extracted parameters
+                                        are available.
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= SAMPLE MEALS ========================= -->
+
+            <section class="diet-card">
+
+                <div class="card-heading">
+
+                    <p class="tagline">
+                        EXAMPLE MEALS
+                    </p>
+
+                    <h2>
+                        Sample Balanced Meal Ideas
+                    </h2>
+
+                    <p>
+                        These are general examples and are not
+                        intended as a personalized medical diet.
+                    </p>
+
+                </div>
+
+
+                <div class="meal-grid">
+
+
+                    <div class="meal-item">
+
+                        <span>
+                            🌅
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Breakfast
+                            </strong>
+
+                            <p>
+                                Oats or poha with vegetables and
+                                a suitable protein source.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="meal-item">
+
+                        <span>
+                            ☀️
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Lunch
+                            </strong>
+
+                            <p>
+                                Roti or rice with vegetables,
+                                dal and a balanced side dish.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="meal-item">
+
+                        <span>
+                            🌇
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Evening Snack
+                            </strong>
+
+                            <p>
+                                Fruit, roasted legumes or another
+                                simple balanced snack.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="meal-item">
+
+                        <span>
+                            🌙
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Dinner
+                            </strong>
+
+                            <p>
+                                A balanced meal with vegetables,
+                                whole grains and a suitable
+                                protein source.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= REPORT DISCUSSION ========================= -->
+
+            <section class="doctor-card">
+
+                <div class="doctor-icon">
+                    👨‍⚕️
+                </div>
+
+                <div>
+
+                    <h2>
+                        When to Discuss Your Report
+                    </h2>
+
+                    <p>
+                        If the report contains results outside the
+                        laboratory's reference information, or if
+                        symptoms or concerns are present, discuss
+                        the report with a qualified healthcare
+                        professional.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= HOW THIS WORKS ========================= -->
+
+            <section class="diet-card">
+
+                <div class="card-heading">
+
+                    <p class="tagline">
+                        SYSTEM WORKFLOW
+                    </p>
+
+                    <h2>
+                        How Report-Based Guidance Works
+                    </h2>
+
+                    <p>
+                        The system reads structured parameters
+                        extracted from the uploaded report,
+                        checks their classified status, and uses
+                        relevant results to display general
+                        dietary and lifestyle information.
+                    </p>
+
+                </div>
+
+
+                <div class="meal-grid">
+
+
+                    <div class="meal-item">
+
+                        <span>
+                            📄
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                1. Report Upload
+                            </strong>
+
+                            <p>
+                                The user uploads a laboratory
+                                report in a supported format.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="meal-item">
+
+                        <span>
+                            🔍
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                2. Parameter Analysis
+                            </strong>
+
+                            <p>
+                                Relevant laboratory parameters
+                                are extracted and classified.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="meal-item">
+
+                        <span>
+                            🥗
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                3. Guidance Generation
+                            </strong>
+
+                            <p>
+                                Relevant general dietary and
+                                lifestyle information is selected.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="meal-item">
+
+                        <span>
+                            👨‍⚕️
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                4. Professional Discussion
+                            </strong>
+
+                            <p>
+                                Important or persistent concerns
+                                should be discussed with a
+                                qualified healthcare professional.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= ACTIONS ========================= -->
+
+            <section class="analysis-actions">
+
+                <a href="{{ url_for('analysis') }}"
+                   class="secondary-btn">
+
+                    Back to Analysis
+
+                </a>
+
+
+                <a href="{{ url_for('upload') }}"
+                   class="primary-btn">
+
+                    Upload New Report
+
+                </a>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- ========================= FOOTER ========================= -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <div>
+
+                <div class="logo">
+                    Health<span>Care</span>
+                </div>
+
+                <p>
+                    Health Report Understanding & Monitoring System
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 Health Report System. All rights reserved.
+            </p>
+
+            <p>
+                For informational purposes only.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>

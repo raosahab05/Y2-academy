@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Precautions - HealthCare</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+
+        <div class="logo">
+            Health<span>Care</span>
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="analysis.html">Analysis</a>
+            <a href="diet.html">Diet & Guidance</a>
+            <a href="precautions.html" class="active">
+                Precautions
+            </a>
+        </nav>
+
+        <div class="nav-buttons">
+            <a href="upload.html" class="primary-btn">
+                Upload Report
+            </a>
+        </div>
+
+    </header>
+
+
+    <!-- Main Section -->
+    <section class="precaution-section">
+
+        <div class="precaution-container">
+
+            <!-- Heading -->
+            <div class="precaution-heading">
+
+                <p class="tagline">
+                    GENERAL HEALTH INFORMATION
+                </p>
+
+                <h1>
+                    Precautions & Discussion Points
+                </h1>
+
+                <p>
+                    Useful points to consider when reviewing your
+                    health report.
+                </p>
+
+            </div>
+
+            <!-- Important Notice -->
+            <div class="precaution-notice">
+
+                <strong>Important:</strong>
+
+                These points provide general information only.
+                They do not diagnose a medical condition or replace
+                advice from a qualified healthcare professional.
+
+            </div>
+
+            <!-- Precaution Cards -->
+            <div class="precaution-grid">
+
+                <div class="precaution-card">
+
+                    <div class="precaution-icon">
+                        📋
+                    </div>
+
+                    <h2>
+                        Review Your Report
+                    </h2>
+
+                    <p>
+                        Check the parameter values together with
+                        the reference ranges provided by the
+                        laboratory.
+                    </p>
+
+                </div>
+
+
+                <div class="precaution-card">
+
+                    <div class="precaution-icon">
+                        🔎
+                    </div>
+
+                    <h2>
+                        Look at Trends
+                    </h2>
+
+                    <p>
+                        When previous reports are available,
+                        compare changes over time rather than
+                        looking at one result alone.
+                    </p>
+
+                </div>
+
+
+                <div class="precaution-card">
+
+                    <div class="precaution-icon">
+                        🧑‍⚕️
+                    </div>
+
+                    <h2>
+                        Discuss Concerns
+                    </h2>
+
+                    <p>
+                        Discuss unusual results, persistent
+                        concerns or symptoms with a qualified
+                        healthcare professional.
+                    </p>
+
+                </div>
+
+
+                <div class="precaution-card">
+
+                    <div class="precaution-icon">
+                        📅
+                    </div>
+
+                    <h2>
+                        Follow-up
+                    </h2>
+
+                    <p>
+                        Follow-up testing should be considered
+                        according to professional medical advice
+                        and individual circumstances.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Doctor Questions -->
+            <div class="questions-card">
+
+                <div class="card-heading">
+
+                    <h2>
+                        Questions to Discuss With a Healthcare Professional
+                    </h2>
+
+                    <p>
+                        You can use these questions when discussing
+                        your report.
+                    </p>
+
+                </div>
+
+
+                <div class="question-list">
+
+                    <div class="question-item">
+                        <span>01</span>
+                        <p>
+                            What do the values outside the reported
+                            reference range mean in my situation?
+                        </p>
+                    </div>
+
+
+                    <div class="question-item">
+                        <span>02</span>
+                        <p>
+                            Do any of these results require
+                            follow-up testing?
+                        </p>
+                    </div>
+
+
+                    <div class="question-item">
+                        <span>03</span>
+                        <p>
+                            Could any medicines, diet or lifestyle
+                            factors affect these results?
+                        </p>
+                    </div>
+
+
+                    <div class="question-item">
+                        <span>04</span>
+                        <p>
+                            When should these parameters be
+                            checked again?
+                        </p>
+                    </div>
+
+
+                    <div class="question-item">
+                        <span>05</span>
+                        <p>
+                            Are there any symptoms or changes that
+                            I should discuss promptly?
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Emergency Information -->
+            <div class="professional-card">
+
+                <div class="professional-icon">
+                    ⚕️
+                </div>
+
+                <div>
+
+                    <h2>
+                        Professional Medical Advice
+                    </h2>
+
+                    <p>
+                        If you have significant symptoms or are
+                        concerned about your health, seek appropriate
+                        medical care rather than relying only on
+                        automated report interpretation.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+            <div class="precaution-actions">
+
+                <a
+                    href="analysis.html"
+                    class="secondary-btn">
+                    Back to Analysis
+                </a>
+
+                <a
+                    href="diet.html"
+                    class="primary-btn">
+                    View Diet Guidance
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-content">
+
+            <div>
+
+                <div class="logo">
+                    Health<span>Care</span>
+                </div>
+
+                <p>
+                    Health Report Understanding & Monitoring System
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 Health Report System. All rights reserved.
+            </p>
+
+            <p>
+                For informational purposes only.
+            </p>
+
+        </div>
+
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>

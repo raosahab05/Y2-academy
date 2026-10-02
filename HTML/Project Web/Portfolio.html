@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f7fa;
+            color: #222;
+            transition: 0.3s;
+        }
+        /* ================= DARK MODE ================= */
+
+        body.dark {
+            background-color: #111827;
+            color: white;
+        }
+
+        body.dark .about,
+        body.dark .project-card,
+        body.dark .education,
+        body.dark .skill {
+            background-color: #1f2937;
+            color: white;
+        }
+
+        body.dark .section-title {
+            color: white;
+        }
+
+        body.dark .education-item {
+            background-color: #374151;
+        }
+        /* ================= NAVBAR ================= */
+
+        nav {
+            background-color: #111827;
+            color: white;
+            padding: 15px 8%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #38bdf8;
+        }
+
+        #theme-btn {
+            background-color: #38bdf8;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 550px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(
+                135deg,
+                #111827,
+                #1e3a8a,
+                #2563eb
+            );
+
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        /* PROFILE PHOTO */
+
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            object-fit:cover;
+            border-radius: 50%;
+            border: 5px solid rgb(255, 255, 255);
+            margin-bottom: 20px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero h1 {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .hero h2 {
+            font-size: 27px;
+            color: #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #e5e7eb;
+        }
+        /* TYPING EFFECT */
+
+        #typing {
+            color: #38bdf8;
+        }
+        #cursor {
+            color: #38bdf8;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+
+        }
+        /* BUTTONS */
+
+        .buttons {
+            margin-top: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 5px;
+            background-color: #38bdf8;
+            color: #111827;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: white;
+            transform: translateY(-3px);
+        }
+
+        .github-btn {
+            background-color: #24292e;
+            color: white;
+        }
+        /* ================= MAIN ================= */
+
+        main {
+            width: 85%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 60px 0;
+        }
+        /* ================= SECTION ================= */
+
+        section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #111827;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: #2563eb;
+            margin: 10px auto;
+            border-radius: 5px;
+        }
+        /* ================= ABOUT ================= */
+
+        .about {
+            background-color: white;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+
+            transition: 0.3s;
+        }
+
+        .about p {
+            font-size: 17px;
+        }
+        /* ================= PROJECTS ================= */
+
+        .project-container {
+
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .project-card {
+
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .project-card h3 {
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+
+        .project-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 9px 18px;
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .project-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+
+        /* ================= SKILLS ================= */
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .skill {
+
+            background-color: white;
+
+            padding: 12px 22px;
+
+            border-radius: 25px;
+
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .skill:hover {
+
+            background-color: #2563eb;
+
+            color: white;
+
+            transform: scale(1.05);
+        }
+
+
+        /* ================= EDUCATION ================= */
+
+        .education {
+
+            background-color: white;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .education-item {
+
+            padding: 15px;
+
+            border-left: 4px solid #2563eb;
+
+            margin-bottom: 15px;
+
+            background-color: #f8fafc;
+        }
+
+        .education-item h3 {
+
+            color: #1e3a8a;
+        }
+
+
+        /* ================= CONTACT ================= */
+
+        .contact {
+
+            background-color: #111827;
+
+            color: white;
+
+            padding: 40px;
+
+            border-radius: 15px;
+
+            text-align: center;
+        }
+
+        .contact p {
+
+            margin: 12px 0;
+        }
+
+        .contact a {
+
+            color: #38bdf8;
+
+            text-decoration: none;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+
+            background-color: #0f172a;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 20px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            nav {
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .nav-links {
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+                gap: 12px;
+            }
+
+            .hero h1 {
+
+                font-size: 38px;
+            }
+
+            .hero h2 {
+
+                font-size: 22px;
+            }
+
+            .project-container {
+
+                grid-template-columns: 1fr;
+            }
+
+            main {
+
+                width: 90%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+            YUVRAJ
+        </div>
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="#home">Home</a>
+            </li>
+
+            <li>
+                <a href="#about">About</a>
+            </li>
+
+            <li>
+                <a href="#projects">Projects</a>
+            </li>
+
+            <li>
+                <a href="#skills">Skills</a>
+            </li>
+
+            <li>
+                <a href="#education">Education</a>
+            </li>
+
+            <li>
+                <a href="#contact">Contact</a>
+            </li>
+
+            <li>
+                <button id="theme-btn" onclick="changeTheme()">
+                    🌙
+                </button>
+            </li>
+
+        </ul>
+
+    </nav>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+
+            <!-- PROFILE PHOTO -->
+
+            <img
+                src="profile.jpeg"
+                alt="Yuvraj Yadav"
+                class="profile-img"
+            >
+
+            <h1>
+                YUVRAJ YADAV
+            </h1>
+
+
+            <!-- TYPING EFFECT -->
+
+            <h2>
+                I am a
+                <span id="typing"></span>
+                <span id="cursor">|</span>
+            </h2>
+
+
+            <p>
+
+                BCA student passionate about web development,
+                programming and building user-friendly websites.
+
+            </p>
+
+
+            <!-- BUTTONS -->
+
+            <div class="buttons">
+
+                <a href="Yuvraj_ATS_Resume.pdf"
+                   download
+                   class="btn">
+
+                    📄 Download Resume
+
+                </a>
+
+
+                <a
+                    href="https://github.com/raosahab05"
+                    target="_blank"
+                    class="btn github-btn">
+
+                    💻 GitHub
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <main>
+
+
+        <!-- ================= ABOUT ================= -->
+
+        <section id="about">
+
+            <h2 class="section-title">
+                About Me
+            </h2>
+
+            <div class="about">
+
+                <p>
+
+                    Hello, my name is Yuvraj Yadav.
+                    I am a BCA student and an aspiring Web Developer.
+
+                    I enjoy creating responsive and user-friendly
+                    websites using HTML, CSS and JavaScript.
+
+                </p>
+
+                <br>
+
+                <p>
+
+                    I also have experience with PHP, MySQL,
+                    Python and C/C++. I am continuously improving
+                    my programming and web development skills
+                    by working on different projects.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= PROJECTS ================= -->
+
+        <section id="projects">
+
+            <h2 class="section-title">
+                My Projects
+            </h2>
+
+
+            <div class="project-container">
+
+
+                <!-- PROJECT 1 -->
+
+                <div class="project-card">
+
+                    <h3>
+                        Portfolio Website
+                    </h3>
+
+                    <p>
+
+                        A personal portfolio website created
+                        using HTML, CSS and JavaScript.
+
+                    </p>
+
+                    <a
+                        href="#"
+                        class="project-btn">
+
+                        View Project
+
+                    </a>
+
+                </div>
+
+                <!-- PROJECT 2 -->
+
+                <div class="project-card">
+
+                    <h3>
+                        Healthcare Website
+                    </h3>
+
+                    <p>
+
+                        A responsive healthcare website created
+                        using HTML and CSS.
+
+                    </p>
+
+                    <a
+                        href="#"
+                        class="project-btn">
+
+                        View Project
+
+                    </a>
+
+                </div>
+
+                <!-- PROJECT 3 -->
+
+                <div class="project-card">
+
+                    <h3>
+                        Python Automation Project
+                    </h3>
+
+                    <p>
+
+                        A Python project designed to automate
+                        simple computer tasks.
+
+                    </p>
+
+                    <a
+                        href="#"
+                        class="project-btn">
+
+                        View Project
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================= SKILLS ================= -->
+
+        <section id="skills">
+
+            <h2 class="section-title">
+                My Skills
+            </h2>
+
+            <div class="skills">
+
+                <div class="skill">
+                    HTML
+                </div>
+
+                <div class="skill">
+                    CSS
+                </div>
+
+                <div class="skill">
+                    JavaScript
+                </div>
+
+                <div class="skill">
+                    PHP
+                </div>
+
+                <div class="skill">
+                    Python
+                </div>
+
+                <div class="skill">
+                    C/C++
+                </div>
+
+                <div class="skill">
+                    MySQL
+                </div>
+
+                <div class="skill">
+                    Git & GitHub
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================= EDUCATION ================= -->
+
+        <section id="education">
+
+            <h2 class="section-title">
+                Education
+            </h2>
+
+            <div class="education">
+
+
+                <div class="education-item">
+
+                    <h3>
+                        BCA - Bachelor of Computer Applications
+                    </h3>
+
+                    <p>
+                        Currently pursuing Bachelor of Computer Applications.
+                    </p>
+
+                </div>
+
+
+                <div class="education-item">
+
+                    <h3>
+                        Class 12th
+                    </h3>
+
+                    <p>
+                        Completed Class 12th education in 2024.
+                    </p>
+
+                </div>
+
+                <div class="education-item">
+
+                    <h3>
+                        Class 10th
+                    </h3>
+
+                    <p>
+                        Completed Class 10th education in 2021.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================= CONTACT ================= -->
+
+        <section id="contact">
+
+            <h2 class="section-title">
+                Contact Me
+            </h2>
+
+
+            <div class="contact">
+
+                <p>
+                    📱 Phone:
+                    8630905125
+                </p>
+
+
+                <p>
+
+                    📧 Email:
+
+                    <a href="mailto:edit.by.y2@gmail.com">
+
+                        edit.by.y2@gmail.com
+
+                    </a>
+
+                </p>
+
+
+                <p>
+
+                    🔗 LinkedIn:
+
+                    <a
+                        href="https://www.linkedin.com/in/yuvraj-yadav-483111361/"
+                        target="_blank">
+
+                        Yuvraj Yadav
+
+                    </a>
+
+                </p>
+
+
+                <p>
+
+                    💻 GitHub:
+
+                    <a
+                        href="https://github.com/raosahab05"
+                        target="_blank">
+
+                        raosahab05
+
+                    </a>
+
+                </p>
+
+                <p>
+
+                    📸 Instagram:
+
+                    <a
+                        href="https://www.instagram.com/yadav_yuv_raj/"
+                        target="_blank">
+
+                        @yadav_yuv_raj
+
+                    </a>
+
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 Yuvraj Yadav | All Rights Reserved
+        </p>
+
+        <p>
+            Thank you for visiting my portfolio!
+        </p>
+
+    </footer>
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        /* ---------- TYPING EFFECT ---------- */
+        const words = [
+            "Web Developer",
+            "Frontend Developer",
+            "BCA Student",
+            "Programmer"
+        ];
+
+        let wordIndex = 0;
+        let charIndex = 0;
+        let deleting = false;
+        function typeEffect() 
+        {
+            const typing = document.getElementById("typing");
+            const currentWord = words[wordIndex];
+            if (deleting) {
+                typing.textContent =
+                    currentWord.substring(0, charIndex - 1);
+
+                charIndex--;
+            } else {
+                typing.textContent =
+                    currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            let speed = deleting ? 70 : 120;
+            if (!deleting && charIndex === currentWord.length) {
+                speed = 1500;
+                deleting = true;
+            }
+            else if (deleting && charIndex === 0) {
+                deleting = false;
+                wordIndex++;
+                if (wordIndex === words.length) {
+                    wordIndex = 0;
+                }
+                speed = 500;
+            }
+            setTimeout(typeEffect, speed);
+        }
+
+        typeEffect();
+        /* ---------- DARK / LIGHT MODE ---------- */
+        function changeTheme() {
+            document.body.classList.toggle("dark");
+
+            const button =
+                document.getElementById("theme-btn");
+            if (document.body.classList.contains("dark")) {
+                button.innerHTML = "☀️";
+            }
+            else {
+                button.innerHTML = "🌙";
+            }
+        }
+    </script>
+</body>
+</html>

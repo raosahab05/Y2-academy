@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Health Report Understanding & Monitoring System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+
+        <div class="logo">
+            Health<span>Care</span>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('home') }}" class="active">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#about">About</a>
+        </nav>
+
+        <div class="nav-buttons">
+            <a href="#" class="login-btn">Login</a>
+
+            <a href="{{ url_for('upload') }}" class="primary-btn">
+                Upload Report
+            </a>
+        </div>
+
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <p class="tagline">HEALTH REPORT ANALYSIS</p>
+
+            <h1>
+                Understand Your Health.
+                <span>Track It Better.</span>
+            </h1>
+
+            <p class="hero-text">
+                Upload your health report and get an easy-to-understand
+                summary, important parameter analysis, general diet guidance
+                and health monitoring.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="{{ url_for('upload') }}" class="primary-btn">
+                    Analyze My Report
+                </a>
+
+                <a href="#how-it-works" class="secondary-btn">
+                    How It Works
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-card">
+
+            <div class="report-icon">
+                📄
+            </div>
+
+            <h3>Health Report</h3>
+
+            <div class="report-status">
+
+                <div>
+                    <span class="status-dot normal"></span>
+                    Normal
+                </div>
+
+                <div>
+                    <span class="status-dot monitor"></span>
+                    Monitor
+                </div>
+
+                <div>
+                    <span class="status-dot attention"></span>
+                    Attention
+                </div>
+
+            </div>
+
+
+            <div class="mini-report">
+
+                <div>
+                    <span>Hemoglobin</span>
+                    <strong>13.5 g/dL</strong>
+                </div>
+
+                <div>
+                    <span>Glucose</span>
+                    <strong>98 mg/dL</strong>
+                </div>
+
+                <div>
+                    <span>Cholesterol</span>
+                    <strong>185 mg/dL</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- How It Works -->
+    <section class="section" id="how-it-works">
+
+        <div class="section-heading">
+
+            <p class="tagline">HOW IT WORKS</p>
+
+            <h2>
+                From Report to Understanding
+            </h2>
+
+            <p>
+                A simple process to help you understand and monitor
+                your health information.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step-card">
+
+                <div class="step-number">01</div>
+
+                <div class="step-icon">📄</div>
+
+                <h3>Upload Report</h3>
+
+                <p>
+                    Upload your health report in PDF or image format.
+                </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+                <div class="step-number">02</div>
+
+                <div class="step-icon">🔍</div>
+
+                <h3>Analyze</h3>
+
+                <p>
+                    Important health parameters are identified and analyzed.
+                </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+                <div class="step-number">03</div>
+
+                <div class="step-icon">📊</div>
+
+                <h3>Monitor</h3>
+
+                <p>
+                    Track your health parameters and changes over time.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Features -->
+    <section class="section features-section" id="features">
+
+        <div class="section-heading">
+
+            <p class="tagline">FEATURES</p>
+
+            <h2>
+                Everything in One Place
+            </h2>
+
+        </div>
+
+
+        <div class="features-grid">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">📋</div>
+
+                <h3>Report Analysis</h3>
+
+                <p>
+                    View important parameters and their reported
+                    reference ranges in a structured format.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🧠</div>
+
+                <h3>Simple Explanation</h3>
+
+                <p>
+                    Understand complex health terminology in
+                    simple language.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🥗</div>
+
+                <h3>Diet Guidance</h3>
+
+                <p>
+                    Get general dietary guidance based on the
+                    available report information.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">⚠️</div>
+
+                <h3>Precautions</h3>
+
+                <p>
+                    See general precautions and points that may
+                    be useful to discuss with a healthcare professional.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">📈</div>
+
+                <h3>Health Trends</h3>
+
+                <p>
+                    Monitor changes in important parameters
+                    across previous reports.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🗂️</div>
+
+                <h3>Report History</h3>
+
+                <p>
+                    Keep your previous reports organized in
+                    one place.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- About -->
+    <section class="about-section" id="about">
+
+        <div class="about-content">
+
+            <p class="tagline">ABOUT THE SYSTEM</p>
+
+            <h2>
+                Your Reports. Your Understanding.
+            </h2>
+
+            <p>
+                Health reports often contain technical terms and numbers
+                that can be difficult to understand. This system is designed
+                to organize those results and present them in a clearer,
+                structured way.
+            </p>
+
+            <p>
+                The system provides general informational and dietary
+                guidance and is not intended to replace professional
+                medical diagnosis or treatment.
+            </p>
+
+            <a href="{{ url_for('upload') }}" class="primary-btn">
+                Get Started
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-content">
+
+            <div>
+
+                <div class="logo">
+                    Health<span>Care</span>
+                </div>
+
+                <p>
+                    Health Report Understanding & Monitoring System
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="{{ url_for('home') }}">
+                    Home
+                </a>
+
+                <a href="#features">
+                    Features
+                </a>
+
+                <a href="#how-it-works">
+                    How It Works
+                </a>
+
+                <a href="#about">
+                    About
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 Health Report System. All rights reserved.
+            </p>
+
+            <p>
+                For informational purposes only.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>
