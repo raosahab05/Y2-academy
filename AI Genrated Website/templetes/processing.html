@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analyzing Report - HealthReport AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="{{ url_for('index') }}" class="brand-logo">
+        <span class="brand-icon">⚕</span>
+        <span>HealthReport AI</span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="#" class="nav-link active">Processing...</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card processing-card">
+      <div class="spinner"></div>
+      <h2>Processing Report</h2>
+      <p style="color: var(--text-muted); margin-top: 6px;">
+        Analyzing document: <strong>{{ filename }}</strong>
+      </p>
+
+      <div class="progress-track">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+
+      <ul class="step-checklist">
+        <li id="step1" class="done">✓ Report uploaded securely</li>
+        <li id="step2">✓ Extracting lab values & test biomarkers</li>
+        <li id="step3">✓ Comparing metrics against clinical references</li>
+        <li id="step4">✓ Generating plain-language health summary</li>
+      </ul>
+
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 24px;">
+        Please wait a moment while the system compiles your results...
+      </p>
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

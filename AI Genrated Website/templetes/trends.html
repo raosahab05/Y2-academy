@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Trends & Monitoring - HealthReport AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <!-- Chart.js from CDN for interactive health charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="{{ url_for('index') }}" class="brand-logo">
+        <span class="brand-icon">⚕</span>
+        <span>HealthReport AI</span>
+      </a>
+      <button class="mobile-toggle" id="mobileToggle">☰</button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="{{ url_for('index') }}" class="nav-link">Home</a></li>
+        <li><a href="{{ url_for('upload') }}" class="nav-link">Upload Report</a></li>
+        <li><a href="{{ url_for('analysis') }}" class="nav-link">Analysis</a></li>
+        <li><a href="{{ url_for('diet') }}" class="nav-link">Diet Guidance</a></li>
+        <li><a href="{{ url_for('precautions') }}" class="nav-link">Precautions</a></li>
+        <li><a href="{{ url_for('trends') }}" class="nav-link active">Health Trends</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <h1 class="page-title">Biomarker Health Monitoring</h1>
+        <p class="page-subtitle">Track physiological variations and progress across multiple uploaded reports.</p>
+      </div>
+      <div>
+        <a href="{{ url_for('upload') }}" class="btn btn-primary">+ Upload Another Report</a>
+      </div>
+    </div>
+
+    {% if history|length < 2 %}
+      <!-- Empty State for Single/No Report -->
+      <div class="empty-state">
+        <div style="font-size: 3rem; margin-bottom: 12px;">📊</div>
+        <h3>Need At Least 2 Reports to Generate Interactive Trends</h3>
+        <p style="color: var(--text-muted); max-width: 520px; margin: 8px auto 20px;">
+          You currently have <strong>{{ history|length }}</strong> report(s) in session history (Active: {{ current_filename }}). Upload your previous or subsequent lab reports to compare biomarker trajectories over time.
+        </p>
+        <a href="{{ url_for('upload') }}" class="btn btn-secondary">Upload Second Report Now</a>
+      </div>
+    {% else %}
+      <!-- Interactive Chart Section -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+          <h3>Parameter Progression Trend</h3>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <label for="parameterSelect" style="font-weight: 600; font-size: 0.9rem;">Select Parameter:</label>
+            <select id="parameterSelect" class="btn btn-secondary" style="padding: 6px 12px;">
+              <option value="Fasting Glucose">Fasting Glucose (mg/dL)</option>
+              <option value="Hemoglobin">Hemoglobin (g/dL)</option>
+              <option value="Total Cholesterol">Total Cholesterol (mg/dL)</option>
+              <option value="Systolic BP">Systolic BP (mmHg)</option>
+              <option value="Vitamin D (25-OH)">Vitamin D (ng/mL)</option>
+              <option value="Thyroid (TSH)">Thyroid TSH (mIU/L)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="chart-container-box">
+          <canvas id="trendChart"></canvas>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Report History Timeline Table -->
+    <div class="card" style="margin-bottom: 40px; padding: 0; overflow: hidden;">
+      <div style="padding: 20px 24px; border-bottom: 1px solid var(--border);">
+        <h3>Session Report History ({{ history|length }} Uploaded)</h3>
+      </div>
+      <div class="table-responsive" style="margin-bottom: 0; border: none;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Report File</th>
+              <th>Upload Date</th>
+              <th>Fasting Glucose</th>
+              <th>Hemoglobin</th>
+              <th>Cholesterol</th>
+              <th>Vitamin D</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in history %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td><strong>{{ item.filename }}</strong></td>
+                <td style="color: var(--text-muted);">{{ item.timestamp }}</td>
+                <td>{{ item.metrics.get('Fasting Glucose', 'N/A') }} mg/dL</td>
+                <td>{{ item.metrics.get('Hemoglobin', 'N/A') }} g/dL</td>
+                <td>{{ item.metrics.get('Total Cholesterol', 'N/A') }} mg/dL</td>
+                <td>{{ item.metrics.get('Vitamin D (25-OH)', 'N/A') }} ng/mL</td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 32px;">
+                  No reports uploaded yet.
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <p>Health Report Understanding & Monitoring System</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+  <!-- Dynamic Trend Chart Script -->
+  <script>
+    const historyData = {{ history_json | safe }};
+    let chartInstance = null;
+
+    function renderTrendChart(selectedParam) {
+      if (!historyData || historyData.length < 2) return;
+
+      const labels = historyData.map((h, i) => `${h.date} (${h.filename.substring(0, 10)}...)`);
+      const values = historyData.map(h => h.metrics[selectedParam] !== undefined ? h.metrics[selectedParam] : null);
+
+      const ctx = document.getElementById("trendChart").getContext("2d");
+
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+
+      chartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: selectedParam,
+            data: values,
+            borderColor: "#0284c7",
+            backgroundColor: "rgba(2, 132, 199, 0.12)",
+            borderWidth: 3,
+            fill: true,
+            tension: 0.35,
+            pointBackgroundColor: "#0369a1",
+            pointRadius: 6,
+            pointHoverRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: true, position: "top" }
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              grid: { color: "#f1f5f9" }
+            },
+            x: {
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    const selectEl = document.getElementById("parameterSelect");
+    if (selectEl) {
+      renderTrendChart(selectEl.value);
+      selectEl.addEventListener("change", function () {
+        renderTrendChart(this.value);
+      });
+    }
+  </script>
+</body>
+</html>

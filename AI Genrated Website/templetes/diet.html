@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personalized Diet Guidance - HealthReport AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="{{ url_for('index') }}" class="brand-logo">
+        <span class="brand-icon">⚕</span>
+        <span>HealthReport AI</span>
+      </a>
+      <button class="mobile-toggle" id="mobileToggle">☰</button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="{{ url_for('index') }}" class="nav-link">Home</a></li>
+        <li><a href="{{ url_for('upload') }}" class="nav-link">Upload Report</a></li>
+        <li><a href="{{ url_for('analysis') }}" class="nav-link">Analysis</a></li>
+        <li><a href="{{ url_for('diet') }}" class="nav-link active">Diet Guidance</a></li>
+        <li><a href="{{ url_for('precautions') }}" class="nav-link">Precautions</a></li>
+        <li><a href="{{ url_for('trends') }}" class="nav-link">Health Trends</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-header">
+      <h1 class="page-title">Personalized Nutritional Guidance</h1>
+      <p class="page-subtitle">Dietary recommendations conditionally tailored to metrics detected in <strong>{{ filename }}</strong>.</p>
+    </div>
+
+    <!-- Conditional Reasoning Box -->
+    {% if diet.conditional_reasons %}
+      <div class="card" style="margin-bottom: 24px; background: #f0fdf4; border-color: #bbf7d0;">
+        <h4 style="color: #166534; margin-bottom: 8px;">Why You Are Seeing These Specific Recommendations:</h4>
+        <ul style="padding-left: 20px; font-size: 0.95rem; color: #14532d;">
+          {% for reason in diet.conditional_reasons %}
+            <li style="margin-bottom: 4px;">{{ reason }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <div class="card" style="margin-bottom: 24px;">
+      <h3>Overall Dietary Outlook</h3>
+      <p style="margin-top: 8px; font-size: 1rem; color: var(--text-muted);">{{ diet.overall }}</p>
+    </div>
+
+    <!-- Foods to Include vs Foods to Limit -->
+    <div class="diet-grid">
+      <div class="card">
+        <h3 style="color: var(--status-normal-text); display: flex; align-items: center; gap: 8px;">
+          <span>✓</span> Foods to Prioritize & Include
+        </h3>
+        <ul class="diet-list">
+          {% for item in diet.include %}
+            <li><span style="color: var(--status-normal-text); font-weight: bold;">+</span> {{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3 style="color: var(--status-attention-text); display: flex; align-items: center; gap: 8px;">
+          <span>✕</span> Foods to Restrict or Limit
+        </h3>
+        <ul class="diet-list">
+          {% for item in diet.limit %}
+            <li><span style="color: var(--status-attention-text); font-weight: bold;">-</span> {{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Daily Meal Suggestion Matrix -->
+    <div class="card" style="margin-bottom: 32px;">
+      <h3 style="margin-bottom: 8px;">Recommended Daily Meal Blueprint</h3>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Structured meal pacing designed to maintain even glycemic load and sustained energy.</p>
+
+      <div class="meal-plan-grid">
+        <div class="meal-card">
+          <span class="meal-badge">Breakfast</span>
+          <p style="font-size: 0.9rem;">{{ diet.breakfast }}</p>
+        </div>
+        <div class="meal-card">
+          <span class="meal-badge">Lunch</span>
+          <p style="font-size: 0.9rem;">{{ diet.lunch }}</p>
+        </div>
+        <div class="meal-card">
+          <span class="meal-badge">Evening Snack</span>
+          <p style="font-size: 0.9rem;">{{ diet.snack }}</p>
+        </div>
+        <div class="meal-card">
+          <span class="meal-badge">Dinner</span>
+          <p style="font-size: 0.9rem;">{{ diet.dinner }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hydration Advice -->
+    <div class="card" style="margin-bottom: 40px; background: #f0f9ff; border-color: #bae6fd;">
+      <h4 style="color: var(--primary-dark); margin-bottom: 6px;">💧 Hydration Protocol</h4>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">{{ diet.hydration }}</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <p>Health Report Understanding & Monitoring System</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

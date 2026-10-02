@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Precautions - HealthReport AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="{{ url_for('index') }}" class="brand-logo">
+        <span class="brand-icon">⚕</span>
+        <span>HealthReport AI</span>
+      </a>
+      <button class="mobile-toggle" id="mobileToggle">☰</button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="{{ url_for('index') }}" class="nav-link">Home</a></li>
+        <li><a href="{{ url_for('upload') }}" class="nav-link">Upload Report</a></li>
+        <li><a href="{{ url_for('analysis') }}" class="nav-link">Analysis</a></li>
+        <li><a href="{{ url_for('diet') }}" class="nav-link">Diet Guidance</a></li>
+        <li><a href="{{ url_for('precautions') }}" class="nav-link active">Precautions</a></li>
+        <li><a href="{{ url_for('trends') }}" class="nav-link">Health Trends</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-header">
+      <h1 class="page-title">Health Precautions & Care Triggers</h1>
+      <p class="page-subtitle">Targeted guidelines based on findings identified in <strong>{{ filename }}</strong>.</p>
+    </div>
+
+    <div class="disclaimer-banner">
+      <strong>Medical Disclaimer:</strong> These precautions represent conservative lifestyle modifications and early-warning boundaries. They do not constitute a clinical diagnosis. Always consult with a registered medical practitioner.
+    </div>
+
+    <div class="precaution-grid">
+      {% for item in precautions %}
+        <div class="card precaution-card {% if 'Attention' in item.detected %}attention{% endif %}">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="color: var(--text-main);">{{ item.parameter }}</h3>
+            <span class="badge {% if 'Attention' in item.detected %}badge-attention{% else %}badge-monitor{% endif %}">
+              {{ item.detected }}
+            </span>
+          </div>
+
+          <div class="precaution-row">
+            <span class="precaution-label">Why It Matters:</span>
+            <span style="color: var(--text-muted); font-size: 0.95rem;">{{ item.importance }}</span>
+          </div>
+
+          <div class="precaution-row" style="margin-top: 10px;">
+            <span class="precaution-label">Actionable Precaution:</span>
+            <span style="font-weight: 500; font-size: 0.95rem;">{{ item.action }}</span>
+          </div>
+
+          <div class="precaution-row" style="margin-top: 10px; padding: 10px; background: #fff1f2; border-radius: 6px;">
+            <span class="precaution-label" style="color: #9f1239;">Consult Doctor If:</span>
+            <span style="color: #881337; font-size: 0.9rem;">{{ item.doctor_trigger }}</span>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <p>Health Report Understanding & Monitoring System</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

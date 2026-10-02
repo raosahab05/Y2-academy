@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Analysis - HealthReport AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="{{ url_for('index') }}" class="brand-logo">
+        <span class="brand-icon">⚕</span>
+        <span>HealthReport AI</span>
+      </a>
+      <button class="mobile-toggle" id="mobileToggle">☰</button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="{{ url_for('index') }}" class="nav-link">Home</a></li>
+        <li><a href="{{ url_for('upload') }}" class="nav-link">Upload Report</a></li>
+        <li><a href="{{ url_for('analysis') }}" class="nav-link active">Analysis</a></li>
+        <li><a href="{{ url_for('diet') }}" class="nav-link">Diet Guidance</a></li>
+        <li><a href="{{ url_for('precautions') }}" class="nav-link">Precautions</a></li>
+        <li><a href="{{ url_for('trends') }}" class="nav-link">Health Trends</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alert-container">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <h1 class="page-title">Diagnostic Analysis Summary</h1>
+        <p class="page-subtitle">Biomarker evaluations extracted from your uploaded medical report.</p>
+      </div>
+      <div class="no-print" style="display: flex; gap: 10px;">
+        <button onclick="window.print()" class="btn btn-secondary">🖨️️ Print / Download PDF</button>
+        <a href="{{ url_for('upload') }}" class="btn btn-outline">Analyze Another Report</a>
+      </div>
+    </div>
+
+    <!-- Dynamic Metadata Strip -->
+    <div class="meta-strip">
+      <div>
+        <span style="color: var(--text-muted); font-size: 0.85rem;">Active Document:</span>
+        <strong style="margin-left: 6px;">{{ filename }}</strong>
+      </div>
+      <div>
+        <span style="color: var(--text-muted); font-size: 0.85rem;">Analysis Timestamp:</span>
+        <strong style="margin-left: 6px;">{{ date }}</strong>
+      </div>
+      <div>
+        <span class="badge badge-normal">Engine Status: Verified</span>
+      </div>
+    </div>
+
+    <!-- Summary KPI Cards -->
+    <div class="summary-cards-grid">
+      <div class="card summary-card">
+        <div class="summary-indicator indicator-normal">{{ normal_count }}</div>
+        <div class="summary-info">
+          <h3>{{ normal_count }}</h3>
+          <p>Normal Parameters</p>
+        </div>
+      </div>
+      <div class="card summary-card">
+        <div class="summary-indicator indicator-monitor">{{ monitor_count }}</div>
+        <div class="summary-info">
+          <h3>{{ monitor_count }}</h3>
+          <p>Parameters to Monitor</p>
+        </div>
+      </div>
+      <div class="card summary-card">
+        <div class="summary-indicator indicator-attention">{{ attention_count }}</div>
+        <div class="summary-info">
+          <h3>{{ attention_count }}</h3>
+          <p>Require Attention</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Shortcuts -->
+    <div class="card no-print" style="margin-bottom: 28px; background: #f0fdfa; border-color: #99f6e4;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <h4 style="color: var(--secondary);">Next Step Guidance Available</h4>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Explore your personalized diet roadmaps, health alerts, and progression trends.</p>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="{{ url_for('diet') }}" class="btn btn-primary">View Diet Plan →</a>
+          <a href="{{ url_for('precautions') }}" class="btn btn-secondary">View Precautions →</a>
+          <a href="{{ url_for('trends') }}" class="btn btn-secondary">View Trends →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Health Parameter Table -->
+    <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 32px;">
+      <div style="padding: 20px 24px; border-bottom: 1px solid var(--border);">
+        <h3 style="font-size: 1.25rem;">Extracted Health Parameters</h3>
+      </div>
+      <div class="table-responsive" style="margin-bottom: 0; border: none;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Detected Value</th>
+              <th>Reference Range</th>
+              <th>Status</th>
+              <th>Brief Clinical Interpretation</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in parameters %}
+              <tr>
+                <td><strong>{{ p.name }}</strong></td>
+                <td><span style="font-weight: 700; font-size: 1.05rem;">{{ p.value }}</span> {{ p.unit }}</td>
+                <td style="color: var(--text-muted);">{{ p.range }} {{ p.unit }}</td>
+                <td>
+                  {% if p.status == 'Normal' %}
+                    <span class="badge badge-normal">Normal</span>
+                  {% elif p.status == 'Monitor' %}
+                    <span class="badge badge-monitor">Monitor</span>
+                  {% else %}
+                    <span class="badge badge-attention">Attention</span>
+                  {% endif %}
+                </td>
+                <td style="font-size: 0.9rem;">{{ p.explanation }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Plain Language "What Does This Mean?" Section -->
+    <div class="card" style="margin-bottom: 40px;">
+      <h3 style="font-size: 1.25rem; margin-bottom: 8px;">What Does This Mean? (Simplified Explanation)</h3>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Clear physiological explanations for each tested marker so you understand your body's vital signals.</p>
+      
+      <div class="explanation-list">
+        {% for p in parameters %}
+          <div class="explanation-item">
+            <h4 style="color: var(--primary-dark); margin-bottom: 4px;">{{ p.name }} ({{ p.value }} {{ p.unit }})</h4>
+            <p style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 4px;"><strong>Function:</strong> {{ p.desc }}</p>
+            <p style="font-size: 0.9rem; color: var(--text-muted);"><strong>Your finding:</strong> {{ p.explanation }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <p>Health Report Understanding & Monitoring System</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

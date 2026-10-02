@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Health Report - HealthReport AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="{{ url_for('index') }}" class="brand-logo">
+        <span class="brand-icon">⚕</span>
+        <span>HealthReport AI</span>
+      </a>
+      <button class="mobile-toggle" id="mobileToggle">☰</button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="{{ url_for('index') }}" class="nav-link">Home</a></li>
+        <li><a href="{{ url_for('upload') }}" class="nav-link active">Upload Report</a></li>
+        <li><a href="{{ url_for('analysis') }}" class="nav-link">Analysis</a></li>
+        <li><a href="{{ url_for('diet') }}" class="nav-link">Diet Guidance</a></li>
+        <li><a href="{{ url_for('precautions') }}" class="nav-link">Precautions</a></li>
+        <li><a href="{{ url_for('trends') }}" class="nav-link">Health Trends</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alert-container">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="page-header" style="text-align: center;">
+      <h1 class="page-title">Upload Your Diagnostic Report</h1>
+      <p class="page-subtitle">Upload blood work, routine CBC, lipid profile, or metabolic panel reports.</p>
+    </div>
+
+    <div class="upload-wrapper">
+      <form id="uploadForm" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone-icon">📁</div>
+          <h3>Drag and drop your report file here</h3>
+          <p style="color: var(--text-muted); margin: 8px 0 16px;">Supports PDF, PNG, JPG, or TXT (Max size: 16 MB)</p>
+          <button type="button" class="btn btn-secondary">Browse Files On Computer</button>
+          <input type="file" id="fileInput" name="report_file" style="display: none;" accept=".pdf,.png,.jpg,.jpeg,.txt" required>
+        </div>
+
+        <div class="file-info-box" id="fileInfoBox">
+          <div>
+            <strong id="selectedFileName">Filename.pdf</strong>
+            <div style="font-size: 0.8rem; color: var(--text-muted);" id="selectedFileSize">0 MB</div>
+          </div>
+          <span class="badge badge-normal">Ready to Process</span>
+        </div>
+
+        <div style="margin-top: 24px; text-align: center;">
+          <button type="submit" id="uploadSubmitBtn" class="btn btn-primary btn-large" style="width: 100%;" disabled>
+            Upload & Analyze Report →
+          </button>
+        </div>
+      </form>
+
+      <div class="card" style="margin-top: 32px; background: #fdfdfd;">
+        <h4 style="margin-bottom: 8px;">Tips For Best Analysis Results:</h4>
+        <ul style="padding-left: 20px; font-size: 0.9rem; color: var(--text-muted);">
+          <li>Ensure text within scanned images is legible and clearly illuminated.</li>
+          <li>Standard panels like Complete Blood Count (CBC) and Lipid Profile parse best.</li>
+          <li>Your file name will remain attached to all subsequent diet and precaution views.</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <p>Health Report Understanding & Monitoring System</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

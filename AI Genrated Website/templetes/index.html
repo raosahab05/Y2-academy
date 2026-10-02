@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Report Understanding & Monitoring System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="{{ url_for('index') }}" class="brand-logo">
+        <span class="brand-icon">⚕</span>
+        <span>HealthReport AI</span>
+      </a>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Navigation">☰</button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="{{ url_for('index') }}" class="nav-link active">Home</a></li>
+        <li><a href="{{ url_for('upload') }}" class="nav-link">Upload Report</a></li>
+        <li><a href="{{ url_for('analysis') }}" class="nav-link">Analysis</a></li>
+        <li><a href="{{ url_for('diet') }}" class="nav-link">Diet Guidance</a></li>
+        <li><a href="{{ url_for('precautions') }}" class="nav-link">Precautions</a></li>
+        <li><a href="{{ url_for('trends') }}" class="nav-link">Health Trends</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alert-container">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <span class="hero-badge">Smart Clinical Interpretation</span>
+      <h1 class="hero-title">Translate Complex Medical Lab Reports Into Clear, Actionable Insights</h1>
+      <p class="hero-desc">
+        Upload your diagnostic blood work or medical report. Get automated parameter extraction, plain-language breakdowns, personalized nutrition advice, and trend tracking over time.
+      </p>
+      <div class="hero-actions">
+        <a href="{{ url_for('upload') }}" class="btn btn-primary btn-large">Upload Your Report →</a>
+        <a href="#how-it-works" class="btn btn-secondary btn-large">How It Works</a>
+      </div>
+    </section>
+
+    <!-- Medical Disclaimer -->
+    <div class="disclaimer-banner">
+      <strong>Notice:</strong> This web application is an educational & health monitoring aid. It provides rule-based interpretations and does not substitute for certified clinical diagnosis or medical counsel.
+    </div>
+
+    <!-- Feature Grid -->
+    <section class="page-header" style="text-align: center;">
+      <h2 class="page-title">Comprehensive Patient-First Features</h2>
+      <p class="page-subtitle">Designed to bridge the gap between clinical lab terminology and everyday health literacy.</p>
+    </section>
+
+    <div class="grid-3">
+      <div class="card feature-card">
+        <div class="feature-icon">📋</div>
+        <h3 class="feature-title">Health Report Analysis</h3>
+        <p class="feature-text">Automatically extracts numeric test markers and maps them against clinically verified standard reference ranges.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="feature-icon">💡</div>
+        <h3 class="feature-title">Simple Health Explanations</h3>
+        <p class="feature-text">Say goodbye to confusing acronyms. Every parameter includes a simplified explanation of its role in your body.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="feature-icon">🥗</div>
+        <h3 class="feature-title">Dynamic Diet Guidance</h3>
+        <p class="feature-text">Receive conditionally filtered meal plans and food choices directly influenced by your detected biomarker ranges.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="feature-icon">⚠️</div>
+        <h3 class="feature-title">Actionable Precautions</h3>
+        <p class="feature-text">Know exactly what habits to tweak and when specific lab triggers warrant consultation with a physician.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="feature-icon">📈</div>
+        <h3 class="feature-title">Trend Tracking</h3>
+        <p class="feature-text">Upload subsequent reports across months to visualize parameter progressions on interactive chronological charts.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3 class="feature-title">Local & Private</h3>
+        <p class="feature-text">All data runs locally within your session. No paid external data-selling APIs or unverified third-party cloud uploads.</p>
+      </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="workflow-section">
+      <div class="page-header" style="text-align: center;">
+        <h2 class="page-title">How The System Works</h2>
+        <p class="page-subtitle">Five simple steps to take charge of your health literacy.</p>
+      </div>
+      <div class="workflow-steps">
+        <div class="step-box">
+          <div class="step-num">1</div>
+          <h4>Upload</h4>
+          <p class="feature-text" style="font-size:0.85rem; margin-top:6px;">Upload your PDF or scanned report securely.</p>
+        </div>
+        <div class="step-box">
+          <div class="step-num">2</div>
+          <h4>Extract</h4>
+          <p class="feature-text" style="font-size:0.85rem; margin-top:6px;">Engine identifies biomarkers and measured units.</p>
+        </div>
+        <div class="step-box">
+          <div class="step-num">3</div>
+          <h4>Analyze</h4>
+          <p class="feature-text" style="font-size:0.85rem; margin-top:6px;">Classifies markers as Normal, Monitor, or Attention.</p>
+        </div>
+        <div class="step-box">
+          <div class="step-num">4</div>
+          <h4>Guide</h4>
+          <p class="feature-text" style="font-size:0.85rem; margin-top:6px;">Offers tailored dietary and daily habit roadmaps.</p>
+        </div>
+        <div class="step-box">
+          <div class="step-num">5</div>
+          <h4>Monitor</h4>
+          <p class="feature-text" style="font-size:0.85rem; margin-top:6px;">Tracks your biometric improvement over time.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container" style="text-align: center;">
+      <p><strong>Health Report Understanding & Monitoring System</strong> — BCA Final Year Healthcare Application</p>
+      <p style="margin-top: 6px; font-size: 0.8rem;">Designed for patient education and health parameter tracking. Consult a qualified physician for clinical care.</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

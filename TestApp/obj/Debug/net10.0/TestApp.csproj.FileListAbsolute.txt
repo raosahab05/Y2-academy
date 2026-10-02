@@ -1,0 +1,14 @@
+F:\VS Code\TestApp\bin\Debug\net10.0\TestApp.exe
+F:\VS Code\TestApp\bin\Debug\net10.0\TestApp.deps.json
+F:\VS Code\TestApp\bin\Debug\net10.0\TestApp.runtimeconfig.json
+F:\VS Code\TestApp\bin\Debug\net10.0\TestApp.dll
+F:\VS Code\TestApp\bin\Debug\net10.0\TestApp.pdb
+F:\VS Code\TestApp\obj\Debug\net10.0\TestApp.GeneratedMSBuildEditorConfig.editorconfig
+F:\VS Code\TestApp\obj\Debug\net10.0\TestApp.AssemblyInfoInputs.cache
+F:\VS Code\TestApp\obj\Debug\net10.0\TestApp.AssemblyInfo.cs
+F:\VS Code\TestApp\obj\Debug\net10.0\TestApp.csproj.CoreCompileInputs.cache
+F:\VS Code\TestApp\obj\Debug\net10.0\TestApp.dll
+F:\VS Code\TestApp\obj\Debug\net10.0\refint\TestApp.dll
+F:\VS Code\TestApp\obj\Debug\net10.0\TestApp.pdb
+F:\VS Code\TestApp\obj\Debug\net10.0\TestApp.genruntimeconfig.cache
+F:\VS Code\TestApp\obj\Debug\net10.0\ref\TestApp.dll

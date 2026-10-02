@@ -1,0 +1,21 @@
+Health-Care-Website/
+│
+├── app.py
+├── requirements.txt
+├── README.md
+│
+├── templates/
+│   ├── index.html
+│   ├── upload.html
+│   ├── processing.html
+│   ├── analysis.html
+│   ├── diet.html
+│   ├── precautions.html
+│   └── trends.html
+│
+└── static/
+    ├── css/
+    │   └── style.css
+    ├── js/
+    │   └── script.js
+    └── uploads/
