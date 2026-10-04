@@ -4312,9 +4312,7 @@ def precautions():
 
 @app.route("/trends")
 def trends():
-    return render_template(
-        "trends.html"
-    )
+    return render_template("trends.html")
 
 
 # ============================================================
