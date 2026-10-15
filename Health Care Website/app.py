@@ -5,6 +5,7 @@ from datetime import datetime
 import pytesseract
 from PIL import Image
 import os
+import json
 import re
 import uuid
 
@@ -29,10 +30,113 @@ pytesseract.pytesseract.tesseract_cmd = (
 
 
 # ============================================================
-# TEMPORARY ANALYSIS STORAGE
+# ANALYSIS STORAGE
 # ============================================================
 
 analysis_store = {}
+
+# Report history is stored locally so the Trends page can compare
+# parameters from reports uploaded in previous runs.
+HISTORY_FILE = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "report_history.json"
+)
+
+
+def load_report_history():
+    try:
+        if not os.path.exists(HISTORY_FILE):
+            return []
+
+        with open(
+            HISTORY_FILE,
+            "r",
+            encoding="utf-8"
+        ) as history_file:
+            data = json.load(history_file)
+
+        return data if isinstance(data, list) else []
+
+    except (OSError, json.JSONDecodeError):
+        return []
+
+
+def save_report_history(history):
+    try:
+        with open(
+            HISTORY_FILE,
+            "w",
+            encoding="utf-8"
+        ) as history_file:
+            json.dump(
+                history,
+                history_file,
+                indent=2,
+                ensure_ascii=False
+            )
+
+    except OSError as error:
+        print(
+            "Report History Save Error:",
+            error
+        )
+
+
+report_history = load_report_history()
+
+
+# ============================================================
+# REPORT HISTORY DATE HELPERS
+# ============================================================
+
+def parse_report_datetime(value):
+    if not value:
+        return None
+
+    value = str(value).strip()
+
+    formats = [
+        "%d/%m/%Y %I:%M %p",
+        "%d/%m/%Y %H:%M",
+        "%d/%m/%Y",
+        "%d-%m-%Y %I:%M %p",
+        "%d-%m-%Y %H:%M",
+        "%d-%m-%Y",
+    ]
+
+    for date_format in formats:
+        try:
+            return datetime.strptime(
+                value,
+                date_format
+            )
+        except ValueError:
+            continue
+
+    return None
+
+
+def format_report_date(value):
+    parsed = parse_report_datetime(value)
+
+    if parsed:
+        return parsed.strftime(
+            "%d %b %Y"
+        )
+
+    return "Date Not Available"
+
+
+def status_css_class(status):
+    value = str(status or "Not Available").strip().lower()
+
+    if value == "normal":
+        return "normal"
+
+    if value in ["low", "high", "monitor", "attention"]:
+        return "monitor"
+
+    return "normal"
 
 
 # ============================================================
@@ -3761,6 +3865,51 @@ def processing():
         )
 
         # ====================================================
+        # REPORT HISTORY
+        # ====================================================
+
+        history_entry = {
+            "report_id":
+                analysis_id,
+
+            "report_name":
+                filename,
+
+            "report_type":
+                report_type,
+
+            "report_date":
+                patient_info.get(
+                    "report_date",
+                    "Not Available"
+                ),
+
+            "report_date_display":
+                format_report_date(
+                    patient_info.get(
+                        "report_date",
+                        "Not Available"
+                    )
+                ),
+
+            "analysis_date":
+                analysis_store[analysis_id][
+                    "analysis_date"
+                ],
+
+            "parameters":
+                parameter_analysis
+        }
+
+        report_history.append(
+            history_entry
+        )
+
+        save_report_history(
+            report_history
+        )
+
+        # ====================================================
         # TERMINAL OUTPUT
         # ====================================================
 
@@ -3949,348 +4098,446 @@ def analysis():
 
 
 # ============================================================
-# DIET
+# PERSONALIZED DIET ENGINE
 # ============================================================
 
-@app.route("/diet")
-def diet():
+def _unique(items):
+    return list(dict.fromkeys(items))
 
-    analysis_id = session.get(
-        "analysis_id"
-    )
 
-    data = analysis_store.get(
-        analysis_id
-    )
+def _diet_rule(
+    focus,
+    include=None,
+    limit=None,
+    habits=None,
+    priority="General"
+):
+    return {
+        "focus": focus,
+        "include": include or [],
+        "limit": limit or [],
+        "habits": habits or [],
+        "priority": priority
+    }
 
-    if not data:
 
-        return render_template(
+def build_personalized_diet(parameter_analysis):
+    """
+    Rule-based educational diet engine.
 
-            "diet.html",
+    The engine does not diagnose conditions or prescribe a medical diet.
+    It uses the status already calculated from the uploaded report's
+    reference information and activates report-specific guidance only
+    when a parameter meets a configured rule.
+    """
 
-            report_type="No Report Available",
-
-            patient_info={},
-
-            dietary_guidance=[],
-
-            limiting_guidance=[],
-
-            health_habits=[
-
-                "Maintain a balanced eating pattern",
-
-                "Stay adequately hydrated",
-
-                "Follow a consistent sleep routine",
-
-                "Maintain regular physical activity",
-
-                "Monitor health reports when advised",
-
-                "Discuss persistent concerns with a qualified healthcare professional"
-            ],
-
-            guidance_message=(
-
-                "Upload and analyse a health report to "
-                "receive report-based general dietary guidance."
-            )
-        )
-
-    parameter_analysis = data.get(
-        "parameter_analysis",
-        {}
-    )
-
-    dietary_guidance = []
-
-    limiting_guidance = []
-
-    health_habits = [
-
-        "Maintain a balanced eating pattern",
-
-        "Stay adequately hydrated",
-
-        "Follow a consistent sleep routine",
-
-        "Maintain regular physical activity",
-
-        "Monitor health reports when advised",
-
-        "Discuss persistent concerns with a qualified healthcare professional"
+    base_include = [
+        "Include a variety of vegetables and seasonal fruits",
+        "Prefer whole grains and minimally processed cereals",
+        "Include appropriate protein-rich foods such as dal, beans, legumes, curd or other suitable sources",
+        "Include nuts and seeds in appropriate portions",
+        "Maintain adequate water intake unless a healthcare professional has advised a fluid restriction"
     ]
 
-    dietary_guidance.extend([
+    base_habits = [
+        "Maintain regular meal timing",
+        "Choose mostly minimally processed foods",
+        "Stay physically active as appropriate",
+        "Monitor future reports when advised",
+        "Discuss persistent or significant abnormalities with a qualified healthcare professional"
+    ]
 
-        "Include a variety of vegetables and seasonal fruits",
-
-        "Prefer whole grains and minimally processed cereals",
-
-        "Include suitable protein-rich foods such as dal, beans, legumes, curd or other appropriate sources",
-
-        "Include nuts and seeds in appropriate portions",
-
-        "Maintain adequate water intake"
-    ])
-
-    for name, parameter in parameter_analysis.items():
-
-        status = parameter.get(
-            "status",
-            ""
+    rules = [
+        _diet_rule(
+            "Blood sugar / HbA1c requires dietary attention",
+            include=[
+                "Prefer high-fiber carbohydrate sources such as whole grains, vegetables and legumes",
+                "Pair carbohydrate-containing foods with protein or fiber-rich foods where appropriate",
+                "Choose whole or minimally processed foods more often"
+            ],
+            limit=[
+                "Limit frequent intake of sugary drinks and sweetened beverages",
+                "Limit foods with large amounts of added sugar",
+                "Avoid making refined and highly processed carbohydrate foods a frequent choice"
+            ],
+            habits=[
+                "Prefer consistent meal patterns",
+                "Monitor glucose-related reports as advised"
+            ],
+            priority="High"
+        ),
+        _diet_rule(
+            "Triglycerides require dietary attention",
+            include=[
+                "Emphasize vegetables, legumes and other fiber-rich foods",
+                "Prefer minimally processed carbohydrate sources",
+                "Use unsaturated-fat food sources in appropriate portions"
+            ],
+            limit=[
+                "Limit frequent intake of sugary foods and sweetened beverages",
+                "Limit heavily processed foods",
+                "Avoid making deep-fried foods a frequent choice"
+            ],
+            habits=[
+                "Keep portions of refined carbohydrates moderate",
+                "Maintain regular physical activity as appropriate"
+            ],
+            priority="High"
+        ),
+        _diet_rule(
+            "LDL / cholesterol requires dietary attention",
+            include=[
+                "Include vegetables, fruits, whole grains and legumes regularly",
+                "Prefer sources of unsaturated fats such as nuts and seeds in appropriate portions",
+                "Choose minimally processed foods more often"
+            ],
+            limit=[
+                "Limit frequent consumption of heavily fried foods",
+                "Limit foods high in saturated fat",
+                "Avoid making highly processed foods a frequent choice"
+            ],
+            habits=[],
+            priority="High"
+        ),
+        _diet_rule(
+            "Hemoglobin is low",
+            include=[
+                "Include iron-containing foods such as legumes, beans, leafy vegetables and other suitable sources",
+                "Combine plant-based iron sources with vitamin-C-rich foods such as citrus fruits, guava or tomatoes",
+                "Include a varied protein-rich diet"
+            ],
+            limit=[
+                "Avoid taking tea or coffee immediately with iron-focused meals when possible"
+            ],
+            habits=[
+                "Discuss persistent low hemoglobin with a healthcare professional"
+            ],
+            priority="High"
+        ),
+        _diet_rule(
+            "Vitamin B12 is low",
+            include=[
+                "Include suitable vitamin-B12-containing or fortified foods according to individual dietary preferences",
+                "Use fortified foods where appropriate"
+            ],
+            limit=[],
+            habits=[
+                "Discuss the result with a healthcare professional because food alone may not always address low B12"
+            ],
+            priority="High"
+        ),
+        _diet_rule(
+            "Vitamin D is low",
+            include=[
+                "Include appropriate vitamin-D-fortified foods where suitable",
+                "Include foods containing vitamin D that fit the person's dietary pattern"
+            ],
+            limit=[],
+            habits=[
+                "Discuss vitamin-D management and appropriate sunlight exposure with a healthcare professional"
+            ],
+            priority="High"
+        ),
+        _diet_rule(
+            "Uric acid requires dietary attention",
+            include=[
+                "Maintain adequate hydration unless fluid restriction has been advised",
+                "Prefer a balanced eating pattern with plenty of vegetables and minimally processed foods"
+            ],
+            limit=[
+                "Discuss the appropriate intake of purine-rich foods with a healthcare professional rather than using a blanket elimination list"
+            ],
+            habits=[
+                "Maintain hydration according to professional advice"
+            ],
+            priority="High"
+        ),
+        _diet_rule(
+            "Homocysteine is high",
+            include=[
+                "Include a varied diet containing folate- and B-vitamin-rich foods such as leafy vegetables and legumes",
+                "Include a variety of nutrient-dense foods"
+            ],
+            limit=[],
+            habits=[
+                "Discuss the elevated result and possible nutritional factors with a healthcare professional"
+            ],
+            priority="Monitor"
+        ),
+        _diet_rule(
+            "Kidney-related parameters require caution",
+            include=[
+                "Keep meals balanced and avoid making large dietary changes based on a single laboratory result",
+                "Follow any fluid or nutrient restrictions only when specifically advised by a healthcare professional"
+            ],
+            limit=[
+                "Do not start a high-protein, low-sodium or fluid-restricted diet solely from this report"
+            ],
+            habits=[
+                "Discuss abnormal kidney-related results with a qualified healthcare professional before making major dietary changes"
+            ],
+            priority="High"
+        ),
+        _diet_rule(
+            "IgE is elevated",
+            include=[],
+            limit=[
+                "Do not eliminate foods solely because total IgE is elevated"
+            ],
+            habits=[
+                "Discuss allergy symptoms and food triggers with a qualified healthcare professional if relevant"
+            ],
+            priority="Monitor"
         )
+    ]
 
+    focus_areas = []
+    foods_to_include = []
+    foods_to_limit = []
+    personalized_habits = []
+    triggered_rules = []
+    normal_parameters = []
+    caution_flags = []
+
+    for name, parameter in (parameter_analysis or {}).items():
+        status = str(parameter.get("status", "")).strip()
         name_lower = name.lower()
 
-        # ====================================================
-        # BLOOD SUGAR
-        # ====================================================
+        if status == "Normal":
+            normal_parameters.append(name)
+
+        matched_rules = []
 
         if (
             "fasting blood sugar" in name_lower
+            or "blood sugar" in name_lower
+            or "glucose" in name_lower
             or "hba1c" in name_lower
-        ):
+        ) and status in ["High", "Prediabetes Range"]:
+            matched_rules.append(rules[0])
 
-            if status in [
-                "High",
-                "Prediabetes Range"
-            ]:
-
-                limiting_guidance.extend([
-
-                    "Limit frequent intake of sugary drinks and sweetened beverages",
-
-                    "Limit foods with large amounts of added sugar",
-
-                    "Prefer whole or minimally processed carbohydrate sources",
-
-                    "Avoid making refined and highly processed foods a frequent part of meals"
-                ])
-
-                health_habits.extend([
-
-                    "Maintain regular physical activity as appropriate",
-
-                    "Prefer consistent meal patterns",
-
-                    "Monitor blood glucose-related reports as advised by a healthcare professional"
-                ])
-
-        # ====================================================
-        # TRIGLYCERIDES
-        # ====================================================
-
-        if "triglyceride" in name_lower:
-
-            if status in [
-                "Borderline High",
-                "High",
-                "Very High"
-            ]:
-
-                limiting_guidance.extend([
-
-                    "Limit frequent intake of sugary foods and sweetened beverages",
-
-                    "Limit heavily processed foods",
-
-                    "Avoid making deep-fried foods a frequent choice",
-
-                    "Prefer balanced portions of carbohydrates and fats"
-                ])
-
-        # ====================================================
-        # LDL / CHOLESTEROL
-        # ====================================================
+        if "triglyceride" in name_lower and status in ["Borderline High", "High", "Very High"]:
+            matched_rules.append(rules[1])
 
         if (
             "ldl cholesterol" in name_lower
             or name_lower == "cholesterol"
+            or "non-hdl" in name_lower
+        ) and status in ["Above Optimal", "Borderline High", "High", "Very High"]:
+            matched_rules.append(rules[2])
+
+        if "hemoglobin" in name_lower and status == "Low":
+            matched_rules.append(rules[3])
+
+        if "vitamin b12" in name_lower and status == "Low":
+            matched_rules.append(rules[4])
+
+        if "vitamin d" in name_lower and status in ["Low", "Deficient", "Insufficient"]:
+            matched_rules.append(rules[5])
+
+        if "uric acid" in name_lower and status in ["High", "Very High"]:
+            matched_rules.append(rules[6])
+
+        if "homocysteine" in name_lower and status in ["High", "Very High"]:
+            matched_rules.append(rules[7])
+
+        if (
+            any(term in name_lower for term in [
+                "creatinine", "urea", "bun", "egfr", "kidney"
+            ])
+            and status not in ["Normal", ""]
         ):
+            matched_rules.append(rules[8])
 
-            if status in [
-                "Above Optimal",
-                "Borderline High",
-                "High",
-                "Very High"
-            ]:
+        if name_lower == "ige" and status in ["High", "Very High"]:
+            matched_rules.append(rules[9])
 
-                limiting_guidance.extend([
+        for rule in matched_rules:
+            if rule not in triggered_rules:
+                triggered_rules.append(rule)
 
-                    "Limit frequent consumption of heavily fried foods",
+            focus_areas.append(f"{name}: {status} – {rule['focus']}")
+            foods_to_include.extend(rule["include"])
+            foods_to_limit.extend(rule["limit"])
+            personalized_habits.extend(rule["habits"])
 
-                    "Prefer minimally processed foods",
+        if status in ["High", "Very High", "Low", "Deficient", "Insufficient", "Borderline High", "Prediabetes Range"] and not matched_rules:
+            caution_flags.append(
+                f"{name}: {status} – report-specific dietary guidance was not generated for this parameter."
+            )
 
-                    "Include vegetables, whole grains and legumes regularly",
+    foods_to_include = _unique(base_include + foods_to_include)
+    foods_to_limit = _unique(foods_to_limit)
+    personalized_habits = _unique(base_habits + personalized_habits)
+    normal_parameters = _unique(normal_parameters)
+    caution_flags = _unique(caution_flags)
 
-                    "Avoid excessive intake of foods high in saturated fat"
-                ])
+    if triggered_rules:
+        priority_order = {"High": 0, "Monitor": 1, "General": 2}
+        triggered_rules.sort(key=lambda item: priority_order.get(item["priority"], 3))
 
-        # ====================================================
-        # VITAMIN D
-        # ====================================================
-
-        if "vitamin d" in name_lower:
-
-            if status in [
-                "Deficient",
-                "Insufficient"
-            ]:
-
-                dietary_guidance.extend([
-
-                    "Discuss vitamin D-rich food options with a healthcare professional",
-
-                    "Include appropriate fortified foods where suitable",
-
-                    "Vitamin D deficiency may require professional assessment and management"
-                ])
-
-                health_habits.append(
-
-                    "Discuss appropriate vitamin D management and sunlight exposure with a healthcare professional"
-                )
-
-        # ====================================================
-        # VITAMIN B12
-        # ====================================================
-
-        if "vitamin b12" in name_lower:
-
-            if status == "Low":
-
-                dietary_guidance.extend([
-
-                    "Include suitable vitamin B12-containing foods according to individual dietary preferences",
-
-                    "Fortified foods may be considered where appropriate",
-
-                    "Discuss the low B12 result with a healthcare professional"
-                ])
-
-        # ====================================================
-        # HOMOCYSTEINE
-        # ====================================================
-
-        if "homocysteine" in name_lower:
-
-            if status in [
-                "High",
-                "Very High"
-            ]:
-
-                dietary_guidance.extend([
-
-                    "Maintain a balanced diet containing appropriate sources of folate and B vitamins",
-
-                    "Include a variety of vegetables, legumes and other nutrient-rich foods",
-
-                    "Discuss the elevated result and possible nutritional factors with a healthcare professional"
-                ])
-
-        # ====================================================
-        # URIC ACID
-        # ====================================================
-
-        if "uric acid" in name_lower:
-
-            if status in [
-                "High",
-                "Very High"
-            ]:
-
-                limiting_guidance.extend([
-
-                    "Discuss appropriate dietary choices with a healthcare professional",
-
-                    "Maintain adequate hydration unless fluid restriction has been advised"
-                ])
-
-        # ====================================================
-        # IGE
-        # ====================================================
-
-        if name_lower == "ige":
-
-            if status in [
-                "High",
-                "Very High"
-            ]:
-
-                health_habits.extend([
-
-                    "If allergy-related symptoms are present, discuss them with a qualified healthcare professional",
-
-                    "Avoid identifying or eliminating foods solely on the basis of an elevated IgE result without professional evaluation"
-                ])
-
-    dietary_guidance = list(
-        dict.fromkeys(
-            dietary_guidance
+        personalization_summary = (
+            "Guidance was generated from the report parameters that were "
+            "classified outside their displayed reference information. "
+            "Normal parameters were not used to create restrictive food rules."
         )
-    )
-
-    limiting_guidance = list(
-        dict.fromkeys(
-            limiting_guidance
+    else:
+        personalization_summary = (
+            "No report-specific dietary rule was triggered. The page therefore "
+            "shows balanced general guidance rather than applying unnecessary restrictions."
         )
+
+    # ------------------------------------------------------------
+    # Dynamic meal framework
+    # ------------------------------------------------------------
+    # This is a flexible example meal structure, not a calorie
+    # prescription. Specific meal choices are activated by the
+    # same report rules used above.
+    # ------------------------------------------------------------
+
+    meal_plan = {
+        "Breakfast": "Vegetable poha/upma or oats with a suitable protein-rich side",
+        "Lunch": "Whole-grain roti or brown rice with dal/beans, vegetables and curd where suitable",
+        "Snack": "A fruit or a small portion of nuts/seeds",
+        "Dinner": "Vegetable-based meal with dal/beans and a suitable whole-grain option"
+    }
+
+    rule_focus = " ".join(
+        rule["focus"].lower()
+        for rule in triggered_rules
     )
 
-    health_habits = list(
-        dict.fromkeys(
-            health_habits
+    if "blood sugar" in rule_focus or "hba1c" in rule_focus:
+        meal_plan.update({
+            "Breakfast": "Vegetable oats/poha with a protein-rich side; avoid making sweetened breakfast foods routine",
+            "Lunch": "2 small whole-grain rotis with dal, vegetables and salad",
+            "Snack": "Whole fruit with a small portion of nuts/seeds",
+            "Dinner": "Vegetable dal or bean-based meal with a moderate whole-grain portion"
+        })
+
+    if "triglycerides" in rule_focus:
+        meal_plan.update({
+            "Breakfast": "Vegetable oats/poha or another minimally processed breakfast",
+            "Lunch": "Dal/beans, plenty of vegetables and a moderate whole-grain portion",
+            "Snack": "Whole fruit or a small portion of nuts/seeds instead of sugary snacks",
+            "Dinner": "Vegetable-rich dal/bean meal with a moderate carbohydrate portion"
+        })
+
+    if "ldl / cholesterol" in rule_focus:
+        meal_plan.update({
+            "Breakfast": "Oats/vegetable poha with nuts or seeds in an appropriate portion",
+            "Lunch": "Dal/beans, vegetables and whole grains; prefer less-fried preparation",
+            "Snack": "Fruit or a small portion of unsalted nuts",
+            "Dinner": "Vegetable and legume-based meal with a suitable whole-grain option"
+        })
+
+    if "hemoglobin is low" in rule_focus:
+        meal_plan.update({
+            "Breakfast": "Iron-containing breakfast option such as legumes/beans or fortified foods, with a vitamin-C-rich fruit",
+            "Lunch": "Dal/beans with leafy vegetables and a vitamin-C-rich salad or fruit",
+            "Snack": "Vitamin-C-rich fruit with a suitable snack",
+            "Dinner": "Legume-based meal with vegetables and a suitable whole-grain option"
+        })
+
+    if "kidney-related parameters" in rule_focus:
+        meal_plan = {
+            "Breakfast": "Simple balanced breakfast using familiar foods; avoid adding supplements or extreme diet changes",
+            "Lunch": "Balanced meal with vegetables, grains and a suitable protein source according to professional advice",
+            "Snack": "Simple fruit or other suitable snack according to the individual's dietary advice",
+            "Dinner": "Balanced, moderate meal following any clinician-provided kidney dietary restrictions"
+        }
+
+    if normal_parameters and not triggered_rules:
+        guidance_message = (
+            "All extracted numeric parameters used by the diet engine are currently "
+            "within their displayed reference ranges, so no restrictive dietary rule "
+            "has been added."
         )
-    )
+    elif triggered_rules:
+        guidance_message = (
+            "This guidance is generated from the uploaded report using predefined "
+            "rules. It is educational report-based guidance, not a medical diet prescription."
+        )
+    else:
+        guidance_message = (
+            "The uploaded report did not provide enough applicable numeric information "
+            "for a report-specific dietary rule."
+        )
 
-    guidance_message = (
+    return {
+        "dietary_guidance": foods_to_include,
+        "limiting_guidance": foods_to_limit,
+        "health_habits": personalized_habits,
+        "focus_areas": focus_areas,
+        "normal_parameters": normal_parameters,
+        "caution_flags": caution_flags,
+        "triggered_rules": triggered_rules,
+        "meal_plan": meal_plan,
+        "personalization_summary": personalization_summary,
+        "guidance_message": guidance_message
+    }
 
-        "The guidance below uses the parameters extracted from "
-        "the uploaded laboratory report. It provides general "
-        "educational information and does not replace a "
-        "personalized medical or dietary plan."
-    )
+
+@app.route("/diet")
+def diet():
+
+    analysis_id = session.get("analysis_id")
+
+    data = analysis_store.get(analysis_id)
+
+    if not data:
+        empty_engine = build_personalized_diet({})
+
+        return render_template(
+            "diet.html",
+            report_type="No Report Available",
+            patient_info={},
+            report_name="No Report Available",
+            analysis_date="Not Available",
+            parameter_analysis={},
+            dietary_guidance=empty_engine["dietary_guidance"],
+            limiting_guidance=empty_engine["limiting_guidance"],
+            health_habits=empty_engine["health_habits"],
+            focus_areas=[],
+            normal_parameters=[],
+            caution_flags=[],
+            triggered_rules=[],
+            meal_plan={
+                "Breakfast": "Vegetable poha/upma or oats with a suitable protein-rich side",
+                "Lunch": "Whole-grain roti or brown rice with dal/beans, vegetables and curd where suitable",
+                "Snack": "A fruit or a small portion of nuts/seeds",
+                "Dinner": "Vegetable-based meal with dal/beans and a suitable whole-grain option"
+            },
+            personalization_summary=(
+                "Upload and analyse a health report to generate report-based "
+                "dietary guidance."
+            ),
+            guidance_message=(
+                "No report is currently available. The system will generate "
+                "dietary guidance after report analysis."
+            )
+        )
+
+    parameter_analysis = data.get("parameter_analysis", {})
+    engine = build_personalized_diet(parameter_analysis)
 
     return render_template(
-
         "diet.html",
-
-        report_type=data.get(
-            "report_type",
-            "Laboratory Report"
-        ),
-
-        patient_info=data.get(
-            "patient_info",
-            {}
-        ),
-
-        report_name=data.get(
-            "report_name",
-            "Uploaded Report"
-        ),
-
-        analysis_date=data.get(
-            "analysis_date",
-            "Not Available"
-        ),
-
-        dietary_guidance=
-            dietary_guidance,
-
-        limiting_guidance=
-            limiting_guidance,
-
-        health_habits=
-            health_habits,
-
-        guidance_message=
-            guidance_message,
-
-        parameter_analysis=
-            parameter_analysis
+        report_type=data.get("report_type", "Laboratory Report"),
+        patient_info=data.get("patient_info", {}),
+        report_name=data.get("report_name", "Uploaded Report"),
+        analysis_date=data.get("analysis_date", "Not Available"),
+        parameter_analysis=parameter_analysis,
+        dietary_guidance=engine["dietary_guidance"],
+        limiting_guidance=engine["limiting_guidance"],
+        health_habits=engine["health_habits"],
+        focus_areas=engine["focus_areas"],
+        normal_parameters=engine["normal_parameters"],
+        caution_flags=engine["caution_flags"],
+        triggered_rules=engine["triggered_rules"],
+        meal_plan=engine["meal_plan"],
+        personalization_summary=engine["personalization_summary"],
+        guidance_message=engine["guidance_message"]
     )
 
 
@@ -4312,7 +4559,360 @@ def precautions():
 
 @app.route("/trends")
 def trends():
-    return render_template("trends.html")
+
+    # --------------------------------------------------------
+    # Collect every numeric parameter that exists in history.
+    # --------------------------------------------------------
+
+    trend_parameters = []
+
+    for report in report_history:
+
+        parameters = report.get(
+            "parameters",
+            {}
+        )
+
+        if not isinstance(parameters, dict):
+            continue
+
+        for parameter_name in parameters:
+
+            if parameter_name not in trend_parameters:
+                trend_parameters.append(
+                    parameter_name
+                )
+
+    requested_parameter = (
+        request.args.get(
+            "parameter",
+            ""
+        ).strip()
+    )
+
+    if (
+        requested_parameter
+        and requested_parameter in trend_parameters
+    ):
+        selected_parameter = requested_parameter
+
+    elif trend_parameters:
+        selected_parameter = trend_parameters[0]
+
+    else:
+        selected_parameter = ""
+
+    # --------------------------------------------------------
+    # Build history for the selected parameter.
+    # --------------------------------------------------------
+
+    trend_history = []
+
+    for report in report_history:
+
+        parameters = report.get(
+            "parameters",
+            {}
+        )
+
+        if (
+            not isinstance(parameters, dict)
+            or selected_parameter not in parameters
+        ):
+            continue
+
+        parameter = parameters.get(
+            selected_parameter,
+            {}
+        )
+
+        numeric_value = parameter.get(
+            "numeric_value"
+        )
+
+        if numeric_value is None:
+            numeric_value = number_from_text(
+                parameter.get(
+                    "value"
+                )
+            )
+
+        if numeric_value is None:
+            continue
+
+        status = parameter.get(
+            "status",
+            "Not Available"
+        )
+
+        unit = parameter.get(
+            "unit",
+            ""
+        )
+
+        display_value = parameter.get(
+            "value",
+            numeric_value
+        )
+
+        value_display = (
+            f"{display_value} {unit}"
+            if unit
+            else str(display_value)
+        )
+
+        report_date = report.get(
+            "report_date",
+            "Not Available"
+        )
+
+        parsed_date = parse_report_datetime(
+            report_date
+        )
+
+        trend_history.append({
+            "report_date":
+                report_date,
+
+            "report_date_display":
+                report.get(
+                    "report_date_display",
+                    format_report_date(
+                        report_date
+                    )
+                ),
+
+            "report_name":
+                report.get(
+                    "report_name",
+                    "Uploaded Report"
+                ),
+
+            "value":
+                numeric_value,
+
+            "value_display":
+                value_display,
+
+            "unit":
+                unit,
+
+            "status":
+                status,
+
+            "status_class":
+                status_css_class(
+                    status
+                ),
+
+            "sort_key":
+                (
+                    parsed_date.isoformat()
+                    if parsed_date
+                    else ""
+                )
+        })
+
+    # Oldest -> newest for the trend line.
+    trend_history.sort(
+        key=lambda item: (
+            item["sort_key"],
+            item["report_name"]
+        )
+    )
+
+    # --------------------------------------------------------
+    # Build chart coordinates.
+    # --------------------------------------------------------
+
+    chart_points = []
+    chart_polyline = ""
+    chart_dates = []
+    y_axis_labels = []
+
+    if trend_history:
+
+        values = [
+            item["value"]
+            for item in trend_history
+        ]
+
+        minimum_value = min(values)
+        maximum_value = max(values)
+
+        if minimum_value == maximum_value:
+
+            padding = (
+                abs(minimum_value) * 0.10
+                if minimum_value != 0
+                else 1
+            )
+
+            chart_min = minimum_value - padding
+            chart_max = maximum_value + padding
+
+        else:
+
+            padding = (
+                maximum_value - minimum_value
+            ) * 0.10
+
+            chart_min = minimum_value - padding
+            chart_max = maximum_value + padding
+
+        chart_width = 700
+        chart_height = 300
+        left = 40
+        right = 640
+        top = 25
+        bottom = 250
+
+        usable_width = right - left
+        usable_height = bottom - top
+
+        count = len(trend_history)
+
+        for index, item in enumerate(
+            trend_history
+        ):
+
+            if count == 1:
+                x = (
+                    left
+                    + usable_width / 2
+                )
+            else:
+                x = (
+                    left
+                    + (
+                        usable_width
+                        * index
+                        / (count - 1)
+                    )
+                )
+
+            ratio = (
+                (
+                    item["value"]
+                    - chart_min
+                )
+                / (
+                    chart_max
+                    - chart_min
+                )
+            )
+
+            y = (
+                bottom
+                - (
+                    ratio
+                    * usable_height
+                )
+            )
+
+            chart_points.append({
+                "x": round(x, 2),
+                "y": round(y, 2),
+                "value": item["value"],
+                "value_display":
+                    item["value_display"]
+            })
+
+            chart_dates.append(
+                item["report_date_display"]
+            )
+
+        chart_polyline = " ".join(
+            f'{point["x"]},{point["y"]}'
+            for point in chart_points
+        )
+
+        for index in range(6):
+
+            ratio = index / 5
+
+            value = (
+                chart_max
+                - (
+                    (chart_max - chart_min)
+                    * ratio
+                )
+            )
+
+            if abs(value) >= 100:
+                label = f"{value:.0f}"
+            elif abs(value) >= 10:
+                label = f"{value:.1f}"
+            else:
+                label = f"{value:.2f}"
+
+            y_axis_labels.append(
+                label
+            )
+
+    latest_value_display = "Not Available"
+    previous_value_display = "Not Available"
+
+    if trend_history:
+
+        latest_value_display = (
+            trend_history[-1][
+                "value_display"
+            ]
+        )
+
+    if len(trend_history) >= 2:
+
+        previous_value_display = (
+            trend_history[-2][
+                "value_display"
+            ]
+        )
+
+    # Newest -> oldest for the table.
+    table_history = list(
+        reversed(
+            trend_history
+        )
+    )
+
+    return render_template(
+
+        "trends.html",
+
+        trend_parameters=
+            trend_parameters,
+
+        selected_parameter=
+            selected_parameter,
+
+        trend_history=
+            table_history,
+
+        chart_points=
+            chart_points,
+
+        chart_polyline=
+            chart_polyline,
+
+        chart_dates=
+            chart_dates,
+
+        y_axis_labels=
+            y_axis_labels,
+
+        latest_value_display=
+            latest_value_display,
+
+        previous_value_display=
+            previous_value_display,
+
+        reports_available=
+            len(trend_history),
+
+        has_trend_data=
+            bool(trend_history)
+    )
 
 
 # ============================================================

@@ -226,7 +226,8 @@
 
                 <span>
 
-                    {{ guidance_message }}
+                    {{ guidance_message
+                       | default("General guidance based on the available report data.") }}
 
                 </span>
 
@@ -331,6 +332,13 @@
 
                             <li>
                                 {{ item }}
+                            </li>
+
+                        {% else %}
+
+                            <li>
+                                Maintain regular healthy habits
+                                appropriate for your situation.
                             </li>
 
                         {% endfor %}
@@ -488,23 +496,25 @@
 
 
 
-            <!-- ========================= SAMPLE MEALS ========================= -->
+            <!-- ========================= PERSONALIZED MEAL PLAN ========================= -->
 
             <section class="diet-card">
 
                 <div class="card-heading">
 
                     <p class="tagline">
-                        EXAMPLE MEALS
+                        REPORT-BASED MEAL IDEAS
                     </p>
 
                     <h2>
-                        Sample Balanced Meal Ideas
+                        Suggested Daily Meal Framework
                     </h2>
 
                     <p>
-                        These are general examples and are not
-                        intended as a personalized medical diet.
+                        These meal ideas are generated from the
+                        report-based dietary rules used by the system.
+                        They are general educational suggestions and
+                        are not a prescribed medical diet.
                     </p>
 
                 </div>
@@ -512,6 +522,8 @@
 
                 <div class="meal-grid">
 
+
+                    <!-- ========================= BREAKFAST ========================= -->
 
                     <div class="meal-item">
 
@@ -526,8 +538,12 @@
                             </strong>
 
                             <p>
-                                Oats or poha with vegetables and
-                                a suitable protein source.
+
+                                {{ meal_plan.get(
+                                    "Breakfast",
+                                    "A balanced breakfast with whole grains, vegetables and a suitable protein source."
+                                ) }}
+
                             </p>
 
                         </div>
@@ -535,6 +551,8 @@
                     </div>
 
 
+
+                    <!-- ========================= LUNCH ========================= -->
 
                     <div class="meal-item">
 
@@ -549,8 +567,12 @@
                             </strong>
 
                             <p>
-                                Roti or rice with vegetables,
-                                dal and a balanced side dish.
+
+                                {{ meal_plan.get(
+                                    "Lunch",
+                                    "A balanced lunch with vegetables, whole grains and a suitable protein source."
+                                ) }}
+
                             </p>
 
                         </div>
@@ -558,6 +580,8 @@
                     </div>
 
 
+
+                    <!-- ========================= EVENING SNACK ========================= -->
 
                     <div class="meal-item">
 
@@ -572,8 +596,15 @@
                             </strong>
 
                             <p>
-                                Fruit, roasted legumes or another
-                                simple balanced snack.
+
+                                {{ meal_plan.get(
+                                    "Snack",
+                                    meal_plan.get(
+                                        "Evening Snack",
+                                        "Choose a simple balanced snack such as fruit, nuts or another suitable option."
+                                    )
+                                ) }}
+
                             </p>
 
                         </div>
@@ -581,6 +612,8 @@
                     </div>
 
 
+
+                    <!-- ========================= DINNER ========================= -->
 
                     <div class="meal-item">
 
@@ -595,14 +628,46 @@
                             </strong>
 
                             <p>
-                                A balanced meal with vegetables,
-                                whole grains and a suitable
-                                protein source.
+
+                                {{ meal_plan.get(
+                                    "Dinner",
+                                    "A balanced dinner with vegetables, whole grains and a suitable protein source."
+                                ) }}
+
                             </p>
 
                         </div>
 
                     </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= PERSONALIZATION SUMMARY ========================= -->
+
+            <section class="diet-card">
+
+                <div class="card-heading">
+
+                    <p class="tagline">
+                        PERSONALIZATION
+                    </p>
+
+                    <h2>
+                        Why These Suggestions Were Shown
+                    </h2>
+
+                    <p>
+
+                        {{ personalization_summary
+                           | default(
+                               "The meal suggestions are based on the available report parameters and their classified status."
+                           ) }}
+
+                    </p>
 
                 </div>
 

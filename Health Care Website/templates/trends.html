@@ -7,7 +7,8 @@
 
     <title>Health Trends</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
 
@@ -21,15 +22,15 @@
         </div>
 
         <nav>
-            <a href="index.html">Home</a>
-            <a href="analysis.html">Analysis</a>
-            <a href="diet.html">Diet & Guidance</a>
-            <a href="precautions.html">Precautions</a>
-            <a href="trends.html" class="active">Health Trends</a>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('analysis') }}">Analysis</a>
+            <a href="{{ url_for('diet') }}">Diet &amp; Guidance</a>
+            <a href="{{ url_for('precautions') }}">Precautions</a>
+            <a href="{{ url_for('trends') }}" class="active">Health Trends</a>
         </nav>
 
         <div class="nav-buttons">
-            <a href="upload.html" class="primary-btn">
+            <a href="{{ url_for('upload') }}" class="primary-btn">
                 Upload Report
             </a>
         </div>
@@ -68,25 +69,36 @@
                     Select Parameter
                 </label>
 
-                <select id="parameter">
+                <form method="GET"
+                      action="{{ url_for('trends') }}"
+                      style="display: inline;">
 
-                    <option value="glucose">
-                        Glucose
-                    </option>
+                    <select id="parameter"
+                            name="parameter"
+                            onchange="this.form.submit()">
 
-                    <option value="hemoglobin">
-                        Hemoglobin
-                    </option>
+                        {% if trend_parameters %}
 
-                    <option value="cholesterol">
-                        Cholesterol
-                    </option>
+                            {% for parameter in trend_parameters %}
 
-                    <option value="vitaminD">
-                        Vitamin D
-                    </option>
+                                <option value="{{ parameter }}"
+                                    {% if parameter == selected_parameter %}selected{% endif %}>
+                                    {{ parameter }}
+                                </option>
 
-                </select>
+                            {% endfor %}
+
+                        {% else %}
+
+                            <option value="">
+                                No parameters available
+                            </option>
+
+                        {% endif %}
+
+                    </select>
+
+                </form>
 
             </div>
 
@@ -97,106 +109,105 @@
                 <div class="card-heading">
 
                     <h2>
-                        Glucose Trend
+                        {% if selected_parameter %}
+                            {{ selected_parameter }} Trend
+                        {% else %}
+                            Health Parameter Trend
+                        {% endif %}
                     </h2>
 
                     <p>
-                        Sample values from previous reports.
+                        {% if has_trend_data %}
+                            Values recorded from uploaded reports.
+                        {% else %}
+                            No historical values are available for this parameter yet.
+                        {% endif %}
                     </p>
 
                 </div>
 
 
-                <!-- Simple Chart -->
-                <div class="chart">
+                {% if has_trend_data %}
 
-                    <div class="y-axis">
+                    <!-- Dynamic Chart -->
+                    <div class="chart">
 
-                        <span>180</span>
-                        <span>160</span>
-                        <span>140</span>
-                        <span>120</span>
-                        <span>100</span>
-                        <span>80</span>
+                        <div class="y-axis">
 
-                    </div>
+                            {% for label in y_axis_labels %}
+                                <span>{{ label }}</span>
+                            {% endfor %}
 
-
-                    <div class="chart-area">
-
-                        <div class="grid-line line-1"></div>
-                        <div class="grid-line line-2"></div>
-                        <div class="grid-line line-3"></div>
-                        <div class="grid-line line-4"></div>
-                        <div class="grid-line line-5"></div>
+                        </div>
 
 
-                        <!-- Trend Line -->
-                        <svg
-                            class="trend-svg"
-                            viewBox="0 0 700 300"
-                            preserveAspectRatio="none">
+                        <div class="chart-area">
 
-                            <polyline
-                                points="40,170 190,130 340,145 490,100 640,120"
-                                fill="none"
-                                stroke="#2563eb"
-                                stroke-width="4"
-                            />
+                            <div class="grid-line line-1"></div>
+                            <div class="grid-line line-2"></div>
+                            <div class="grid-line line-3"></div>
+                            <div class="grid-line line-4"></div>
+                            <div class="grid-line line-5"></div>
 
-                            <circle
-                                cx="40"
-                                cy="170"
-                                r="6"
-                                fill="#2563eb"
-                            />
 
-                            <circle
-                                cx="190"
-                                cy="130"
-                                r="6"
-                                fill="#2563eb"
-                            />
+                            <svg
+                                class="trend-svg"
+                                viewBox="0 0 700 300"
+                                preserveAspectRatio="none">
 
-                            <circle
-                                cx="340"
-                                cy="145"
-                                r="6"
-                                fill="#2563eb"
-                            />
+                                {% if chart_polyline %}
+                                    <polyline
+                                        points="{{ chart_polyline }}"
+                                        fill="none"
+                                        stroke="#2563eb"
+                                        stroke-width="4"
+                                    />
+                                {% endif %}
 
-                            <circle
-                                cx="490"
-                                cy="100"
-                                r="6"
-                                fill="#2563eb"
-                            />
+                                {% for point in chart_points %}
 
-                            <circle
-                                cx="640"
-                                cy="120"
-                                r="6"
-                                fill="#2563eb"
-                            />
+                                    <circle
+                                        cx="{{ point.x }}"
+                                        cy="{{ point.y }}"
+                                        r="6"
+                                        fill="#2563eb"
+                                    />
 
-                        </svg>
+                                {% endfor %}
 
-                        <!-- Dates -->
-                        <div class="chart-dates">
+                            </svg>
 
-                            <span>Jan</span>
-                            <span>Mar</span>
-                            <span>May</span>
-                            <span>Jul</span>
-                            <span>Sep</span>
+
+                            <!-- Dates -->
+                            <div class="chart-dates">
+
+                                {% for date in chart_dates %}
+                                    <span>{{ date }}</span>
+                                {% endfor %}
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                </div>
+                {% else %}
+
+                    <div style="
+                        padding: 50px 20px;
+                        text-align: center;
+                        color: #64748b;
+                    ">
+                        <p style="margin: 0;">
+                            Upload and analyse a report containing this
+                            parameter to start building its trend history.
+                        </p>
+                    </div>
+
+                {% endif %}
 
             </div>
+
 
             <!-- Report Comparison -->
             <div class="trend-card">
@@ -208,7 +219,7 @@
                     </h2>
 
                     <p>
-                        Previous values recorded in the system.
+                        Previous values recorded from uploaded reports.
                     </p>
 
                 </div>
@@ -230,49 +241,51 @@
 
                         <tbody>
 
-                            <tr>
-                                <td>25 Sep 2026</td>
-                                <td>Glucose</td>
-                                <td>145 mg/dL</td>
-                                <td>
-                                    <span class="status-badge monitor">
-                                        Monitor
-                                    </span>
-                                </td>
-                            </tr>
+                            {% if trend_history %}
 
-                            <tr>
-                                <td>15 Jul 2026</td>
-                                <td>Glucose</td>
-                                <td>132 mg/dL</td>
-                                <td>
-                                    <span class="status-badge normal">
-                                        Normal
-                                    </span>
-                                </td>
-                            </tr>
+                                {% for item in trend_history %}
 
-                            <tr>
-                                <td>10 May 2026</td>
-                                <td>Glucose</td>
-                                <td>128 mg/dL</td>
-                                <td>
-                                    <span class="status-badge normal">
-                                        Normal
-                                    </span>
-                                </td>
-                            </tr>
+                                    <tr>
 
-                            <tr>
-                                <td>20 Mar 2026</td>
-                                <td>Glucose</td>
-                                <td>120 mg/dL</td>
-                                <td>
-                                    <span class="status-badge normal">
-                                        Normal
-                                    </span>
-                                </td>
-                            </tr>
+                                        <td>
+                                            {{ item.report_date_display }}
+                                        </td>
+
+                                        <td>
+                                            {{ selected_parameter }}
+                                        </td>
+
+                                        <td>
+                                            {{ item.value_display }}
+                                        </td>
+
+                                        <td>
+
+                                            <span class="status-badge {{ item.status_class }}">
+                                                {{ item.status }}
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            {% else %}
+
+                                <tr>
+
+                                    <td colspan="4"
+                                        style="text-align: center; padding: 30px;">
+
+                                        No historical report values are available
+                                        for this parameter.
+
+                                    </td>
+
+                                </tr>
+
+                            {% endif %}
 
                         </tbody>
 
@@ -282,25 +295,33 @@
 
             </div>
 
+
             <!-- Summary -->
             <div class="trend-summary">
 
                 <div>
                     <span>Latest Value</span>
-                    <strong>145 mg/dL</strong>
+                    <strong>
+                        {{ latest_value_display }}
+                    </strong>
                 </div>
 
                 <div>
                     <span>Previous Value</span>
-                    <strong>132 mg/dL</strong>
+                    <strong>
+                        {{ previous_value_display }}
+                    </strong>
                 </div>
 
                 <div>
                     <span>Reports Available</span>
-                    <strong>4</strong>
+                    <strong>
+                        {{ reports_available }}
+                    </strong>
                 </div>
 
             </div>
+
 
             <!-- Note -->
             <div class="trend-note">
@@ -318,6 +339,7 @@
 
     </section>
 
+
     <!-- Footer -->
     <footer>
 
@@ -330,7 +352,7 @@
                 </div>
 
                 <p>
-                    Health Report Understanding & Monitoring System
+                    Health Report Understanding &amp; Monitoring System
                 </p>
 
             </div>
@@ -350,6 +372,7 @@
         </div>
 
     </footer>
+
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
