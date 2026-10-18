@@ -25,17 +25,18 @@ button, input, select { font: inherit; }
 .site-header { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.94); border-bottom: 1px solid rgba(231,233,225,.8); backdrop-filter: blur(12px); }
 .nav-wrap { min-height: 82px; display: flex; align-items: center; justify-content: space-between; gap: 30px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; flex-shrink: 0; }
-.brand-mark { width: 39px; height: 39px; display: grid; place-items: center; border-radius: 12px; background: var(--green); font-family: var(--font-display); font-size: 17px; font-weight: 800; letter-spacing: -2px; transform: rotate(-4deg); }
+.brand-mark { width: 39px; height: 39px; display: flex; flex-direction: row; justify-content: center; align-items: center; border-radius: 12px; background: var(--green); font-family: var(--font-display); font-size: 17px; font-weight: 800; letter-spacing: -2px; transform: rotate(-4deg); }
+
 .brand-mark span { color: #536e21; }
 .brand-name { display: flex; flex-direction: column; font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: -.8px; line-height: 1.05; }
 .brand-name span { font-size: 10px; font-weight: 600; letter-spacing: 2.7px; text-transform: uppercase; margin-top: 5px; }
-.main-nav { display: flex; align-items: center; gap: 29px; font-size: 13px; font-weight: 600; }
-.nav-link { color: #53605a; transition: color .2s; }
+.main-nav { display: flex; align-items： center; gap: 29px; font-size: 13px; font-weight: 600; }
+.nav-link { color： #53605a; transition： color .2s; }
 .nav-link:hover, .nav-link.active { color: var(--ink); }
 .chevron { font-size: 15px; margin-left: 2px; }
-.btn { display: inline-flex; justify-content: center; align-items: center; gap: 20px; border: 0; border-radius: 7px; padding: 14px 19px; font-size: 13px; font-weight: 700; cursor: pointer; transition: transform .2s, background .2s; }
-.btn:hover { transform: translateY(-2px); }
-.btn span { font-size: 16px; line-height: 1; }
+.btn { display: inline-flex; justify-content: center; align-items: center; gap: 20px; border: 0; border-radius： 7px; padding： 14px 19px; font-size： 13px; font-weight： 700; cursor： pointer; transition： transform .2s, box-shadow .2s; }
+.btn:hover { transform： translateY(-2px); }
+.btn span { font-size： 16px; line-height： 1; }
 .btn-small { padding: 11px 14px; gap: 12px; font-size: 12px; }
 .btn-dark { background: var(--ink); color: white; }
 .btn-dark:hover { background: #2d3a34; }
