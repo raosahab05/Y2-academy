@@ -9,25 +9,54 @@
 </head>
 
 <body> 
-  <header class="site-header">
-    <div class="container nav-wrap">
-      <a class="brand" href="#home" aria-label="Y2 Academy home">
-        <span class="brand-mark">Y<span>2</span></span>
-        <span class="brand-name">Y2<span>Academy</span></span>
+
+<!-- Navigation -->
+<header class="site-header">
+  <div class="container nav-wrap">
+
+    <a href="Home%20Page.html" class="brand">
+      <div class="brand-mark">Y<span>2</span></div>
+      <div class="brand-name">
+        Y2 Academy
+        <span>LEARN · GROW · LEAD</span>
+      </div>
+    </a>
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Open navigation"
+      aria-expanded="false"
+      aria-controls="mainNav">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+      <a class="nav-link active" href="Home%20Page.html">Home</a>
+      <a class="nav-link" href="About%20Page.html">About</a>
+      <a class="nav-link" href="Courses%20Page.html">Courses</a>
+      <a class="nav-link" href="Testimonials%20Page.html">Testimonials</a>
+      <a class="nav-link" href="Blog%20Page.html">Blog</a>
+      <a class="nav-link" href="Contact%20Page.html">Contact</a>
+      <a class="btn btn-primary btn-small nav-cta"
+         href="Contact%20Page.html">
+        Enquire Now <span>↗</span>
       </a>
-      <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-      <nav class="main-nav" aria-label="Main navigation">
-        <a class="nav-link active" href="#home">Home</a>
-        <a class="nav-link" href="#programs">Programs <span class="chevron">⌄</span></a>
-        <a class="nav-link" href="#approach">Our approach</a>
-        <a class="nav-link" href="#stories">Success stories</a>
-        <a class="nav-link" href="#contact">Contact</a>
-        <a class="btn btn-small btn-dark nav-cta" href="#contact">Book a free demo <span>↗</span></a>
-      </nav>
-    </div>
-  </header>
+    </nav>
+
+  </div>
+
+  <!-- Top Bar -->
+<div class="top-strip">
+  <div class="container top-strip-inner">
+    <span>Build your confidence. Build your future.</span>
+    <a href="Contact%20Page.html">Talk to our team <span>↗</span></a>
+  </div>
+</div>
+
+</header>
 
   <main>
     <section class="hero section" id="home">
@@ -153,7 +182,14 @@
         <form class="contact-form" id="contactForm">
           <label for="fullName">Your name</label><input id="fullName" name="fullName" type="text" placeholder="Enter your name" required minlength="2">
           <label for="email">Email address</label><input id="email" name="email" type="email" placeholder="you@example.com" required>
-          <label for="interest">I'm interested in</label><select id="interest" name="interest" required><option value="">Choose a program</option><option>Spoken English</option><option>Interview Preparation</option><option>Personality Development</option><option>Professional Skills</option><option>Not sure yet</option></select>
+          <label for="interest">I'm interested in</label><select id="interest" name="interest" required>
+            <option value="">Choose a program</option>
+            <option>Spoken English</option>
+            <option>Interview Preparation</option>
+            <option>Personality Development</option>
+            <option>Professional Skills</option>
+            <option>Not sure yet</option>
+          </select>
           <button class="btn btn-primary form-submit" type="submit">Send enquiry <span>↗</span></button>
           <p class="form-message" id="formMessage" role="status" aria-live="polite"></p>
           <small class="form-disclaimer">Demo form only. No data is sent or stored.</small>
@@ -162,13 +198,35 @@
     </section>
   </main>
   <script src="script.js"></script>
-</body>
-<footer class="site-footer">
-    <div class="container footer-main">
-      <a class="brand footer-brand" href="#home"><span class="brand-mark">P<span>A</span></span><span class="brand-name">practice<span>academy</span></span></a>
-      <p>Learn. Practice. Progress.</p>
-      <div class="footer-links"><a href="#programs">Programs</a><a href="#approach">Our approach</a><a href="#contact">Contact</a></div>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+
+      <div class="footer-main">
+        <a href="Home Page.html" class="brand">
+          <div class="brand-mark">Y<span>2</span></div>
+          <div class="brand-name">
+            Y2 Academy
+            <span>LEARN · GROW · LEAD</span>
+          </div>
+        </a>
+
+        <p>Learn new skills. Build confidence. Keep growing.</p>
+
+        <div class="footer-links">
+          <a href="Home Page.html">Home</a>
+          <a href="About Page.html">About</a>
+          <a href="Courses Page.html">Courses</a>
+          <a href="Contact Page.html">Contact</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span id="year"></span> Y2 Academy. All rights reserved.</span>
+        <a href="Home Page.html">Back to top ↑</a>
+      </div>
+
     </div>
-    <div class="container footer-bottom"><span>© <span id="year"></span> Practice Academy concept website.</span><a href="#home">Back to top ↑</a></div>
   </footer>
+</body>
 </html>
