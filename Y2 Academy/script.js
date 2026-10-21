@@ -40,7 +40,7 @@ if (contactForm && formMessage) {
     const name = nameInput ? nameInput.value.trim() : "Student";
 
     formMessage.textContent =
-      `Thanks, ${name}! The demo form is working. Connect a backend to receive real enquiries.`;
+      `Thanks, ${name}! Your Enquire has been submmited.`;
 
     contactForm.reset();
   });
