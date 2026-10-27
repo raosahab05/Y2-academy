@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Y2 Academy</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body id="top">
+
+  <!-- Top Bar -->
+  <div class="top-strip">
+    <div class="container top-strip-inner">
+      <span>Build your confidence. Build your future.</span>
+      <a href="#contact-form">Talk to our team <span>↗</span></a>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="index.html" class="brand">
+        <div class="brand-mark">Y<span>2</span></div>
+        <div class="brand-name">
+          Y2 Academy
+          <span>LEARN · GROW · LEAD</span>
+        </div>
+      </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="mainNav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="mainNav">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="About%20Page.html">About</a>
+        <a class="nav-link" href="Courses%20Page.html">Courses</a>
+        <a class="nav-link" href="Testimonials%20Page.html">Testimonials</a>
+        <a class="nav-link" href="Blog%20Page.html">Blog</a>
+        <a class="nav-link active" href="Contact%20Page.html">Contact</a>
+        <a class="btn btn-primary btn-small nav-cta" href="#contact-form">
+          Enquire Now <span>↗</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Hero Section -->
+    <section class="contact-hero">
+      <div class="container contact-hero-inner">
+        <span class="contact-eyebrow">WE'RE HERE TO HELP</span>
+        <h1>Let's start your <span>learning journey.</span></h1>
+        <p>
+          Have a question about our courses or learning opportunities?
+          Send us an enquiry and take the next step towards your goals.
+        </p>
+        <a href="#contact-form" class="btn btn-primary">
+          Send an Enquiry <span>↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section section" id="contact-form">
+      <div class="container">
+
+        <div class="section-heading contact-heading">
+          <span class="contact-eyebrow">GET IN TOUCH</span>
+          <h2>How can we help you?</h2>
+          <p>Choose a topic and tell us what you would like to know.</p>
+        </div>
+
+        <div class="contact-layout">
+
+          <!-- Contact Information -->
+          <div class="contact-info">
+
+            <div class="contact-info-card">
+              <div class="contact-icon">01</div>
+              <h3>Course Enquiries</h3>
+              <p>
+                Want to know more about a course, its topics, or how to get
+                started? Share your questions through our enquiry form.
+              </p>
+            </div>
+
+            <div class="contact-info-card">
+              <div class="contact-icon">02</div>
+              <h3>Learning Support</h3>
+              <p>
+                Tell us what you are learning and where you need guidance.
+                Include enough detail to help explain your question.
+              </p>
+            </div>
+
+            <div class="contact-note">
+              <span class="contact-note-mark">✦</span>
+              <div>
+                <h3>Your next step starts here.</h3>
+                <p>
+                  Complete the enquiry form to try the website's demo
+                  interaction. The form does not send messages to a team yet.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Enquiry Form -->
+          <div class="contact-form-card">
+            <h2>Send us a message</h2>
+            <p class="contact-form-intro">
+              Fill in the details below.
+            </p>
+
+            <form id="contactForm">
+
+              <div class="contact-field">
+                <label for="fullName">Full Name</label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  placeholder="Enter your full name"
+                  autocomplete="name"
+                  required>
+              </div>
+
+              <div class="contact-field">
+                <label for="email">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  autocomplete="email"
+                  required>
+              </div>
+
+              <div class="contact-field">
+                <label for="course">What are you interested in?</label>
+                <select id="course" name="course" required>
+                  <option value="">Select an option</option>
+                  <option value="web-development">Web Development</option>
+                  <option value="programming">Programming</option>
+                  <option value="career-guidance">Career Guidance</option>
+                  <option value="general-enquiry">General Enquiry</option>
+                </select>
+              </div>
+
+              <div class="contact-field">
+                <label for="message">Your Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="5"
+                  placeholder="Write your question here..."
+                  required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary contact-submit">
+                Submit Enquiry <span>↗</span>
+              </button>
+
+              <p
+                id="formMessage"
+                class="form-message"
+                role="status"
+                aria-live="polite"></p>
+
+            </form>
+
+            <p class="contact-privacy-note">
+              Demo form only. Your message is not sent or stored.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section class="contact-bottom-cta">
+      <div class="container">
+        <h2>Keep learning. Keep moving forward.</h2>
+        <p>Explore the learning opportunities available on Y2 Academy.</p>
+        <a href="Courses%20Page.html" class="btn btn-primary">
+          Explore Courses <span>↗</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+
+      <div class="footer-main">
+        <a href="index.html" class="brand footer-brand">
+          <div class="brand-mark">Y<span>2</span></div>
+          <div class="brand-name">
+            Y2 Academy
+            <span>LEARN · GROW · LEAD</span>
+          </div>
+        </a>
+
+        <p>Learn new skills. Build confidence. Keep growing.</p>
+
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="About%20Page.html">About</a>
+          <a href="Courses%20Page.html">Courses</a>
+          <a href="Testimonials%20Page.html">Testimonials</a>
+          <a href="Blog%20Page.html">Blog</a>
+          <a href="Contact%20Page.html">Contact</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span id="year"></span> Y2 Academy. All rights reserved.</span>
+        <a href="#top">Back to top ↑</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

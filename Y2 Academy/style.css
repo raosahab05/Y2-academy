@@ -31,11 +31,19 @@ button, input, select { font:inherit; }
 .brand-name { display:flex; flex-direction:column; font-family:var(--font-display); font-size:16px; font-weight:800; letter-spacing:-.8px; line-height:1.05; }
 .brand-name span { font-size:10px; font-weight:600; letter-spacing:2.7px; text-transform:uppercase; margin-top:5px; }
 .main-nav { display:flex; align-items:center; gap:29px; font-size:13px; font-weight:600; }
+<<<<<<< HEAD
 .nav-link { color： #53605a; transition: color .2s; }
 .nav-link:hover, .nav-link.active { color:var(--ink); }
 .chevron { font-size:15px; margin-left:2px; }
 .btn { display:inline-flex; justify-content:center; align-items:center; gap:20px; border:0; border-radius：7px; padding：14px19px; font-family： var(--font-display); font-weight： 800; text-transform：uppercase; cursor:pointer; transition： background .2s, color .2s; }
 .btn span { font-size 16px; line-height 1;}
+=======
+.nav-link { color： #53605a; transition： color .2s; }
+.nav-link:hover, .nav-link.active { color:var(--ink); }
+.chevron { font-size:15px; margin-left:2px; }
+.btn { display:inline-flex; justify-content:center; align-items:center; gap:20px; border:0; border-radius： 7px; padding： 14px 19px; font-family： var(--font-display); font-weight： 800; text-transform： uppercase; cursor： pointer; transition： background .2s, color .2s; }
+.btn span { font-size： 16px; line-height： 1; }
+>>>>>>> origin/main
 .btn-small { padding:11px 14px; gap:12px; font-size:12px; }
 .btn-dark { background:var(--ink); color:white; }
 .btn-dark:hover { background:#2d3a34; }
@@ -1620,25 +1628,44 @@ details[open] .faq-plus { transform:rotate(45deg); }
 /* Contact Page - Number Badge Theme Fix */
 .contact-info-card .contact-number,
 .contact-info-card .contact-icon {
+<<<<<<< HEAD
   background:#eaf5df;
   color:#507b60;
   border-color:#d5e8c5;
+=======
+  background: #eaf5df;
+  color: #507b60;
+  border-color: #d5e8c5;
+>>>>>>> origin/main
 }
 
 
 /* Contact Page - Number Badge Green Theme */
 .contact-info-card .contact-icon {
+<<<<<<< HEAD
   background-color:#eaf5df;
   color:#507b60;
   border:1px solid #d5e8c5;
   border-radius:12px;
   transition:background-color 0.25s ease, color 0.25s ease;
+=======
+  background-color: #eaf5df;
+  color: #507b60;
+  border: 1px solid #d5e8c5;
+  border-radius: 12px;
+  transition: background-color 0.25s ease, color 0.25s ease;
+>>>>>>> origin/main
 }
 
 /* Subtle hover effect */
 .contact-info-card:hover .contact-icon {
+<<<<<<< HEAD
   background-color:#c3f55b;
   color:#19221d;
+=======
+  background-color: #c3f55b;
+  color: #19221d;
+>>>>>>> origin/main
 }
 
 /* CONTACT PAGE - MATCH BLOG PAGE COLORS */
@@ -1804,6 +1831,7 @@ textarea:focus-visible {
 
 /* Prevent horizontal overflow */
 html {
+<<<<<<< HEAD
   max-width:100%;
   overflow-x:clip;
 }
@@ -1811,11 +1839,21 @@ html {
 body {
   max-width:100%;
   overflow-x:clip;
+=======
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  max-width: 100%;
+  overflow-x: clip;
+>>>>>>> origin/main
 }
 
 img,
 video,
 iframe {
+<<<<<<< HEAD
   max-width:100%;
 }
 
@@ -1832,10 +1870,29 @@ iframe {
   .section {
     padding-top:64px;
     padding-bottom:64px;
+=======
+  max-width: 100%;
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+  .container {
+    width: min(100% - 40px, 100%);
+  }
+
+  .main-nav {
+    gap: 16px;
+  }
+
+  .section {
+    padding-top: 64px;
+    padding-bottom: 64px;
+>>>>>>> origin/main
   }
 }
 
 /* Mobile */
+<<<<<<< HEAD
 @media (max-width:760px) {
   .container {
     width:calc(100% - 32px);
@@ -1869,10 +1926,46 @@ iframe {
   .site-footer {
     padding-top:40px;
     padding-bottom:24px;
+=======
+@media (max-width: 760px) {
+  .container {
+    width: calc(100% - 32px);
+  }
+
+  .section {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .section-heading {
+    margin-bottom: 28px;
+  }
+
+  .section-heading h2 {
+    font-size: clamp(26px, 6vw, 34px);
+    line-height: 1.2;
+  }
+
+  .section-heading p {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .btn {
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .site-footer {
+    padding-top: 40px;
+    padding-bottom: 24px;
+>>>>>>> origin/main
   }
 }
 
 /* Small mobile screens */
+<<<<<<< HEAD
 @media (max-width:420px) {
   .container {
     width:calc(100% - 24px);
@@ -1889,5 +1982,23 @@ iframe {
 
   .btn {
     padding:12px 15px;
+=======
+@media (max-width: 420px) {
+  .container {
+    width: calc(100% - 24px);
+  }
+
+  .section {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .section-heading h2 {
+    font-size: 27px;
+  }
+
+  .btn {
+    padding: 12px 15px;
+>>>>>>> origin/main
   }
 }
