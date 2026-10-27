@@ -1,4 +1,3 @@
-
 const menuToggle = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
 
@@ -23,12 +22,12 @@ if (menuToggle && mainNav) {
   });
 }
 
-// Demo contact form
+// Contact form - Formspree integration
 const contactForm = document.querySelector("#contactForm");
 const formMessage = document.querySelector("#formMessage");
 
 if (contactForm && formMessage) {
-  contactForm.addEventListener("submit", (event) => {
+  contactForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     if (!contactForm.checkValidity()) {
@@ -36,13 +35,62 @@ if (contactForm && formMessage) {
       return;
     }
 
-    const nameInput = document.querySelector("#fullName");
-    const name = nameInput ? nameInput.value.trim() : "Student";
+    const submitButton = contactForm.querySelector(
+      'button[type="submit"]'
+    );
 
-    formMessage.textContent =
-      `Thanks, ${name}! Your Enquire has been submmited.`;
+    const originalButtonText = submitButton
+      ? submitButton.innerHTML
+      : "";
 
-    contactForm.reset();
+    formMessage.textContent = "";
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending...";
+    }
+
+    try {
+      const response = await fetch(contactForm.action, {
+        method: "POST",
+        body: new FormData(contactForm),
+        headers: {
+          Accept: "application/json"
+        }
+      });
+
+      if (response.ok) {
+        formMessage.textContent =
+          "Thank you! Your enquiry has been sent successfully.";
+
+        contactForm.reset();
+      } else {
+        let errorMessage =
+          "We couldn't send your enquiry. Please try again.";
+
+        try {
+          const result = await response.json();
+
+          if (result.errors && result.errors.length > 0) {
+            errorMessage = result.errors
+              .map((error) => error.message)
+              .join(" ");
+          }
+        } catch {
+          // Use the default error message if no JSON response is available.
+        }
+
+        formMessage.textContent = errorMessage;
+      }
+    } catch (error) {
+      formMessage.textContent =
+        "Network error. Please check your internet connection and try again.";
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonText;
+      }
+    }
   });
 }
 
