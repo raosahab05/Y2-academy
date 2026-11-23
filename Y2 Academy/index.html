@@ -16,7 +16,6 @@
     <a href="Contact%20Page.html">Talk to our team <span>↗</span></a>
   </div>
 </div>
-<p class="skip-link"><a href="#main">Skip to main content</a></p>
 
 <!-- Navigation -->
 <header class="site-header">
@@ -179,7 +178,8 @@
     <section class="contact-section section" id="contact">
       <div class="container contact-panel">
         <div class="contact-copy"><div class="eyebrow light-eyebrow">YOUR NEXT STEP</div><h2>Ready to grow<br>with confidence?</h2><p>Tell us what you'd like to work on. Let's find a good place to start.</p><div class="contact-detail"><span>✉</span> Start with a simple enquiry</div></div>
-        <form class="contact-form" id="contactForm">
+        <form action="https://formspree.io/f/xdeegpja" method="POST"
+ class="contact-form" id="contactForm">
           <label for="fullName">Your name</label><input id="fullName" name="fullName" type="text" placeholder="Enter your name" required minlength="2">
           <label for="email">Email address</label><input id="email" name="email" type="email" placeholder="you@example.com" required>
           <label for="interest">I'm interested in</label><select id="interest" name="interest" required>
@@ -192,7 +192,6 @@
           </select>
           <button class="btn btn-primary form-submit" type="submit">Send enquiry <span>↗</span></button>
           <p class="form-message" id="formMessage" role="status" aria-live="polite"></p>
-          <small class="form-disclaimer">Demo form only. No data is sent or stored.</small>
         </form>
       </div>
     </section>

@@ -1642,30 +1642,21 @@ details[open] .faq-plus { transform:rotate(45deg); }
 
 /* Contact Page - Number Badge Green Theme */
 .contact-info-card .contact-icon {
-<<<<<<< HEAD
-  background-color:#eaf5df;
-  color:#507b60;
-  border:1px solid #d5e8c5;
-  border-radius:12px;
-  transition:background-color 0.25s ease, color 0.25s ease;
-=======
+
   background-color: #eaf5df;
   color: #507b60;
   border: 1px solid #d5e8c5;
   border-radius: 12px;
   transition: background-color 0.25s ease, color 0.25s ease;
->>>>>>> origin/main
+
 }
 
 /* Subtle hover effect */
 .contact-info-card:hover .contact-icon {
-<<<<<<< HEAD
-  background-color:#c3f55b;
-  color:#19221d;
-=======
+
   background-color: #c3f55b;
   color: #19221d;
->>>>>>> origin/main
+
 }
 
 /* CONTACT PAGE - MATCH BLOG PAGE COLORS */
@@ -1831,15 +1822,6 @@ textarea:focus-visible {
 
 /* Prevent horizontal overflow */
 html {
-<<<<<<< HEAD
-  max-width:100%;
-  overflow-x:clip;
-}
-
-body {
-  max-width:100%;
-  overflow-x:clip;
-=======
   max-width: 100%;
   overflow-x: clip;
 }
@@ -1847,7 +1829,7 @@ body {
 body {
   max-width: 100%;
   overflow-x: clip;
->>>>>>> origin/main
+
 }
 
 img,
